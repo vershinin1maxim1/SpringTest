@@ -1,82 +1,118 @@
 package com.example.sweater.controller;
 
-import com.example.sweater.domain.Message;
+import com.example.sweater.domain.product.*;
 import com.example.sweater.domain.User;
-import com.example.sweater.repos.MessageRepo;
+import com.example.sweater.repos.ProductRepo;
+import com.example.sweater.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
-import java.util.UUID;
 
 @Controller
 public class MainController {
     @Autowired
-    private MessageRepo messageRepo;
-
-    @Value("${upload.path}")
-    private String uploadPath;
+    private ProductRepo productRepo;
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
         return "greeting";
     }
 
-    @GetMapping("/main")
-    public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
-        Iterable<Message> messages = messageRepo.findAll();
-
-        if (filter != null && !filter.isEmpty()) {
-            messages = messageRepo.findByTag(filter);
+    @GetMapping({"/ochki","/ochki/**"})
+    public String main(@RequestParam(required = false,
+                    defaultValue = "") String filter, Model model, HttpServletRequest request) {
+        Iterable<Product> products;
+        String[] strings = splitUrl(request, "/ochki");
+        //тут надо доделать
+        if (!StringUtils.isEmpty(filter)) {
+            products = productRepo.findByName(filter);
         } else {
-            messages = messageRepo.findAll();
+            products = productRepo.findAll();
         }
-
-        model.addAttribute("messages", messages);
+        ArrayList<ProductProxy> productProxys= new ArrayList();
+        products.forEach(s->productProxys.add(new ProductProxy(s)));
+        model.addAttribute("products", productProxys);
         model.addAttribute("filter", filter);
-
+        model.addAttribute("colors", Color.values());
+        model.addAttribute("genders", Gender.values());
         return "main";
     }
 
-    @PostMapping("/main")
-    public String add(
-            @AuthenticationPrincipal User user,
-            @RequestParam String text,
-            @RequestParam String tag, Map<String, Object> model,
-            @RequestParam("file") MultipartFile file
-    ) throws IOException {
-        Message message = new Message(text, tag, user);
-
-        if (file != null && !file.getOriginalFilename().isEmpty()) {
-            File uploadDir = new File(uploadPath);
-
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-            file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-            message.setFilename(resultFilename);
+    private String[] splitUrl(HttpServletRequest request, String startFrom){
+        String referrer = request.getRequestURL().toString();
+        String substring = referrer.substring(referrer.indexOf(startFrom)+startFrom.length());
+        if(StringUtils.isEmpty(substring)){
+            return null;
         }
+        return substring.split("/");
+    }
 
-        messageRepo.save(message);
 
-        Iterable<Message> messages = messageRepo.findAll();
+//    @PostMapping("/main")
+//    public String add(
+//            @Valid Product product,
+//            BindingResult bindingResult,
+//            Model model,
+//            @RequestParam("file") MultipartFile file
+//    ) throws IOException {
+//
+//        if (bindingResult.hasErrors()) {
+//            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+//
+//            model.mergeAttributes(errorsMap);
+//            model.addAttribute("product", product);
+//        } else {
+//            productService.saveFile(product, file);
+//
+//            model.addAttribute("product", null);
+//
+//            productRepo.save(product);
+//        }
+//
+//        Iterable<Product> products = productRepo.findAll();
+//
+//        model.addAttribute("products", products);
+//
+//        return "main";
+//    }
 
-        model.put("messages", messages);
+    @GetMapping("/user-products/edit")
+    public String userProducts(
+            @AuthenticationPrincipal User currentUser,
+            Model model,
+            @RequestParam(required = false) Product product
+    ) {
+//        Iterable<Product> products = productRepo.findAll();
+//        model.addAttribute("products", products);
+        model.addAttribute("product", product==null?null:new ProductProxy(product));
+        model.addAttribute("colors", Color.values());
+        model.addAttribute("genders", Gender.values());
+        return "userProducts";
+    }
 
-        return "main";
+    @PostMapping("/user-products/edit")
+    public String updateProduct(
+            @AuthenticationPrincipal User currentUser,
+            @RequestParam("id") Product product,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam Map<String, String> form
+    ) throws IOException {
+        productService.saveProduct(product, name, description, file, form);
+        return "redirect:/user-products/edit";
     }
 }
