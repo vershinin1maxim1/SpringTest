@@ -5,8 +5,7 @@ create table product (
     filename varchar(255),
     name varchar(255),
     description varchar(2048),
-    category_card_id int8,
-    attribute_card_id int8,
+    attribute_id int8,
     primary key (id)
 );
 
@@ -25,15 +24,16 @@ create table usr (
     primary key (id)
 );
 
-create table attributes (
+create table attribute (
+    id int8 not null,
     product_id int8 not null,
-    attributes varchar(63)
+    attribute_id int4 not null
 );
 
 alter table if exists user_role
     add constraint user_role_user_fk
     foreign key (user_id) references usr;
 
-alter table if exists attributes
-    add constraint attributes_product_fk
+alter table if exists attribute
+    add constraint attribute_product_fk
     foreign key (product_id) references product;

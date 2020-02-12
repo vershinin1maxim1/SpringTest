@@ -20,13 +20,16 @@ public class ProductProxy {
         this.name = product.getName();
         this.filename = product.getFilename();
         for (Attribute attr : product.getAttributes()) {
-            Class type = attr.getType();
-            if (type.equals(Color.class)) {
-                this.colors.add(Color.valueOf(attr.toString()));
-                continue;
-            }
-            if (type.equals(Gender.class)) {
-                this.genders.add(Gender.valueOf(attr.toString()));
+            AttributeEnum attrEnum = AttributeEnum.findById(attr.getAttributeId());
+            if (attrEnum != null) {
+                Class type = attrEnum.getType();
+                if (type.equals(Color.class)) {
+                    this.colors.add(Color.valueOf(attrEnum.toString()));
+                    continue;
+                }
+                if (type.equals(Gender.class)) {
+                    this.genders.add(Gender.valueOf(attrEnum.toString()));
+                }
             }
         }
     }

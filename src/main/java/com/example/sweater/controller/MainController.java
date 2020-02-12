@@ -17,7 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class MainController {
@@ -35,10 +37,11 @@ public class MainController {
     public String main(@RequestParam(required = false,
                     defaultValue = "") String filter, Model model, HttpServletRequest request) {
         Iterable<Product> products;
-        String[] strings = splitUrl(request, "/ochki");
+        String[] codes = splitUrl(request, "/ochki");
         //тут надо доделать
-        if (!StringUtils.isEmpty(filter)) {
-            products = productRepo.findByName(filter);
+        Set<Integer> attributesIds = getAttributesIds(codes);
+        if (attributesIds!=null &&attributesIds.size()>0) {
+            products = productRepo.findByAttributes(attributesIds);
         } else {
             products = productRepo.findAll();
         }
@@ -59,7 +62,21 @@ public class MainController {
         }
         return substring.split("/");
     }
+    private Set<Integer> getAttributesIds(String[] codes){
 
+        Set<Integer> result = new HashSet<>();
+        if(codes!=null) {
+            for (String code : codes) {
+                if (!StringUtils.isEmpty(code)) {
+                    AttributeEnum attributeEnumByCode = AttributeEnum.findByCode(code);
+                    if(attributeEnumByCode!=null) {
+                        result.add(attributeEnumByCode.getId());
+                    }
+                }
+            }
+        }
+        return result;
+    }
 
 //    @PostMapping("/main")
 //    public String add(

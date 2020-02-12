@@ -37,8 +37,8 @@ public class ProductService {
         if (file != null) {
             saveFile(product, file);
         }
-        Set<String> atributes = Arrays.stream(Attribute.values())
-                .map(Attribute::name)
+        Set<String> attributes = Arrays.stream(AttributeEnum.values())
+                .map(AttributeEnum::name)
                 .collect(Collectors.toSet());
         if(product.getAttributes()==null){
             product.setAttributes(new HashSet<Attribute>());
@@ -46,8 +46,8 @@ public class ProductService {
         product.getAttributes().clear();
 
         for (String key : form.keySet()) {
-            if (atributes.contains(key)) {
-                product.getAttributes().add(Attribute.valueOf(key));
+            if (attributes.contains(key)) {
+                product.getAttributes().add(new Attribute(product, AttributeEnum.valueOf(key).getId()));
             }
         }
         productRepo.save(product);

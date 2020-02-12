@@ -1,51 +1,57 @@
 package com.example.sweater.domain.product;
 
-import java.util.HashSet;
+import com.example.sweater.domain.User;
+import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.net.Inet4Address;
 import java.util.Set;
 
-public enum Attribute {
-    BLACK("chernyj", Color.class),
-    WHITE("belyj", Color.class),
-    RED("krasnyj", Color.class),
-    MEN("muzhskoj", Gender.class),
-    WOMEN("zhenskij", Gender.class);
+@Entity
+public class Attribute {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
+    private Product product;
+    @Column(name = "attribute_id")
+    private Integer attributeId;
 
-    private final String code;
-    private final Class type;
-
-    private Attribute(String code, Class type) {
-        this.code = code;
-        this.type = type;
+    public Attribute() {
     }
 
-    public Class getType() {
-        return type;
+    public Attribute(Product product, Integer attributeId) {
+        this.product=product;
+        this.attributeId=attributeId;
     }
 
-    public String getCode() {
-        return code;
+    public Attribute(Product product) {
+        this.product=product;
     }
 
-//    private Set<Attribute> getAttributesEnumSetByAttrStrSet(Set<String> attributes){
-//        HashSet<Attribute> result =new HashSet();
-//        for(String attr: attributes){
-//            Attribute attribute = lookupByCode(attr);
-//            if(attribute != null){
-//                result.add(attribute);
-//            }
-//        }
-//        return result;
-//    }
-//
-//    public static Attribute lookupByCode(String code) {
-//        if(code != null) {
-//            Attribute[] attributes = Attribute.values();
-//            for (int i = 0; i < attributes.length; i++) {
-//                if (attributes[i].getCode().equals(code)) {
-//                    return attributes[i];
-//                }
-//            }
-//        }
-//        return null;
-//    }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Integer getAttributeId() {
+        return attributeId;
+    }
+
+    public void setAttributeId(Integer attributeId) {
+        this.attributeId = attributeId;
+    }
 }

@@ -20,10 +20,13 @@ public class Product {
 
     private String filename;
 
-    @ElementCollection(targetClass = Attribute.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "attributes", joinColumns = @JoinColumn(name = "product_id"))
-    @Enumerated(EnumType.STRING)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Attribute> attributes;
+
+//    @ElementCollection(targetClass = AttributeEnum.class, fetch = FetchType.EAGER)
+//    @CollectionTable(name = "attributes", joinColumns = @JoinColumn(name = "product_id"))
+//    @Enumerated(EnumType.STRING)
+//    private Set<AttributeEnum> attributes;
 
     public Product() {
     }
@@ -64,7 +67,7 @@ public class Product {
         return attributes;
     }
 
-    public void setAttributes(Set<Attribute> colors) {
-        this.attributes = colors;
+    public void setAttributes(Set<Attribute> attributes) {
+        this.attributes = attributes;
     }
 }
