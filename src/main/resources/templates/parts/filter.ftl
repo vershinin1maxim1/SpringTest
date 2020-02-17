@@ -1,3 +1,24 @@
+
+<#--аджакс надо будет куда-то вынести наружу-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+
+    $(document).ready(function () {]
+        debugger;
+        alert(${Color.colors});
+        $("#searchButton").click(function (e) {
+            window.location.replace(makeSearchFunction());
+        });
+    });
+
+    function makeSearchFunction(){
+        var result="";
+
+
+
+        return result;
+    }
+</script>
 <div class="col-sm-3">
     <div class="card bg-light">
         <div class="card-header">Параметры</div>
@@ -11,7 +32,7 @@
 
                             <#include "color.ftl" />
                             <#include "gender.ftl" />
-                            <button type="submit" class="btn btn-primary ml-2">Поиск</button>
+                            <a id="searchButton" class="btn btn-primary ml-2">Поиск</a>
                         </form>
                     </div>
                 </div>
