@@ -3,19 +3,29 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script type="text/javascript" charset="utf-8">
 
-    $(document).ready(function () {]
-        debugger;
-        alert(${Color.colors});
+    $(document).ready(function () {
+
+        // alert("sad");
+        // alert();
         $("#searchButton").click(function (e) {
+            // alert("asda");
             window.location.replace(makeSearchFunction());
         });
     });
 
     function makeSearchFunction(){
-        var result="";
+        var result="/ochki";
+
+        var searchFilterElements=$("#filterForm").find(".searchFilterElement");
+        debugger;
+            for(var i=0;i< searchFilterElements.length;i++){
+                result+="/"+searchFilterElements[i]["name"];
+            }
+
+            debugger;
 
 
-
+        debugger;
         return result;
     }
 </script>
@@ -27,9 +37,8 @@
 <#--            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <form method="get" action="/ochki" class="form-inline">
+                        <form id="filterForm" method="get" action="/ochki" class="form-inline">
                             <input type="text" name="name" class="form-control" value="${filter?ifExists}" placeholder="Поиск по имени">
-
                             <#include "color.ftl" />
                             <#include "gender.ftl" />
                             <a id="searchButton" class="btn btn-primary ml-2">Поиск</a>

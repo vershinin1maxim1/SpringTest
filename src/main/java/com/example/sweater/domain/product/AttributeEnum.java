@@ -3,11 +3,11 @@ package com.example.sweater.domain.product;
 import org.springframework.util.StringUtils;
 
 public enum AttributeEnum {
-    BLACK(0,"chernyj", Color.class),
-    WHITE(1,"belyj", Color.class),
-    RED(2,"krasnyj", Color.class),
-    MEN(3,"muzhskoj", Gender.class),
-    WOMEN(4,"zhenskij", Gender.class);
+    BLACK(0, Color.BLACK.getCode(), Color.class),
+    WHITE(1, Color.WHITE.getCode(), Color.class),
+    RED(2, Color.RED.getCode(), Color.class),
+    MEN(3, Gender.MEN.getCode(), Gender.class),
+    WOMEN(4, Gender.WOMEN.getCode(), Gender.class);
 
     private final Integer id;
     private final String code;
