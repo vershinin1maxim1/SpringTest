@@ -15,7 +15,7 @@ import java.util.Set;
 public interface ProductRepo extends CrudRepository<Product, Long> {
 // погуглить PagingAndSortingRepository
     List<Product> findByName(String Name);
-//    List<Product> findDistinctByAttributes(Set<Attribute> attributes);
+//     List<Product> findDistinctByAttributes(Set<Attribute> attributes);
 
     @Query(value = "SELECT DISTINCT p FROM Product p JOIN Attribute a ON a.product=p WHERE a.attributeId IN (:attributeIds)")
     public List<Product> findByAttributes(@Param("attributeIds") Set<Integer> attributeIds);//сюда добавить параметр , Pageable pageable А ВОЗВРАЩАЕТ Page<Product>
