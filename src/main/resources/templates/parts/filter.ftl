@@ -1,3 +1,5 @@
+<#import "color.ftl" as colorPage>
+
 
 <#--аджакс надо будет куда-то вынести наружу-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
@@ -17,9 +19,13 @@
         var result="/ochki";
 
         var searchFilterElements=$("#filterForm").find(".searchFilterElement");
-        debugger;
+
             for(var i=0;i< searchFilterElements.length;i++){
-                result+="/"+searchFilterElements[i]["name"];
+                debugger;
+                if($(searchFilterElements[i]).is(":checked")) {
+                    debugger;
+                    result += "/" + searchFilterElements[i]["name"];
+                }
             }
 
             debugger;
@@ -39,8 +45,9 @@
                     <div class="form-group col-md-6">
                         <form id="filterForm" method="get" action="/ochki" class="form-inline">
                             <input type="text" name="name" class="form-control" value="${filter?ifExists}" placeholder="Поиск по имени">
-                            <#include "color.ftl" />
-                            <#include "gender.ftl" />
+
+                            <@colorPage.colorPage filterProduct/>
+<#--                            <#include "gender.ftl" />-->
                             <a id="searchButton" class="btn btn-primary ml-2">Поиск</a>
                         </form>
                     </div>

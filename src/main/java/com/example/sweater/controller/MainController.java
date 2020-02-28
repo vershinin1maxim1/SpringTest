@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
@@ -45,9 +46,14 @@ public class MainController {
         } else {
             products = productRepo.findAll();
         }
+        Product filterProduct = new Product();
+        Set<Attribute> attributes = attributesIds.stream().map(s->new Attribute(filterProduct ,s)).collect(Collectors.toSet());
+        filterProduct.setAttributes(attributes);
         ArrayList<ProductProxy> productProxys= new ArrayList();
         products.forEach(s->productProxys.add(new ProductProxy(s)));
         model.addAttribute("products", productProxys);
+        //передадим искусственно созданный продукт со всемы изаполненными значениями фильтрации для заполнения фильтра
+        model.addAttribute("filterProduct", new ProductProxy(filterProduct));
         model.addAttribute("filter", filter);
         model.addAttribute("colors", Color.values());
         model.addAttribute("genders", Gender.values());
