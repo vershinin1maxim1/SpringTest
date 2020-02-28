@@ -1,4 +1,5 @@
-<#import "color.ftl" as colorPage1>
+<#import "color.ftl" as colorPage>
+<#import "gender.ftl" as genderPage>
 <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
     Создание товара
 </a>
@@ -29,8 +30,8 @@
                     <label class="custom-file-label" for="customFile">Выберите изображение товара</label>
                 </div>
             </div>
-            <#if product??><@colorPage1.colorPage product/></#if>
-            <#include "gender.ftl" />
+            <#if product??><@colorPage.colorPage product/></#if>
+            <#if product??><@genderPage.genderPage gender/></#if>
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
             <input type="hidden" name="id" value="<#if product??>${product.id}</#if>" />
             <div class="form-group">

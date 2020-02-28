@@ -1,4 +1,5 @@
 <#import "color.ftl" as colorPage>
+<#import "gender.ftl" as genderPage>
 
 
 <#--аджакс надо будет куда-то вынести наружу-->
@@ -47,7 +48,7 @@
                             <input type="text" name="name" class="form-control" value="${filter?ifExists}" placeholder="Поиск по имени">
 
                             <@colorPage.colorPage filterProduct/>
-<#--                            <#include "gender.ftl" />-->
+                            <@genderPage.genderPage filterProduct/>
                             <a id="searchButton" class="btn btn-primary ml-2">Поиск</a>
                         </form>
                     </div>
