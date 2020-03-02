@@ -59,7 +59,7 @@ public class MainController {
 //        String order="";
         if(!StringUtils.isEmpty(sort)) {
 
-            sortedBy = "ASC".equals(order) ? Sort.by(sort).ascending() : Sort.by(sort).descending();
+            sortedBy = "DESC".equals(order) ? Sort.by(sort).descending() : Sort.by(sort).ascending();
         }
         Pageable pageable = PageRequest.of(page-1, productsOnPage, sortedBy);
         if (attributesIds!=null &&attributesIds.size()>0) {
@@ -84,6 +84,8 @@ public class MainController {
         model.addAttribute("maxPage", max(currentPage, totalPages));
         model.addAttribute("minPage", min(currentPage, 1));
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("orderName", "name".equals(sort)?order:null);
+        model.addAttribute("orderPrice", "price".equals(sort)?order:null);
         return "main";
     }
 

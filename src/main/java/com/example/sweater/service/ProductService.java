@@ -38,7 +38,7 @@ public class ProductService {
             saveFile(product, file);
         }
         Set<String> attributes = Arrays.stream(AttributeEnum.values())
-                .map(AttributeEnum::name)
+                .map(AttributeEnum::getCode)
                 .collect(Collectors.toSet());
         if(product.getAttributes()==null){
             product.setAttributes(new HashSet<Attribute>());
@@ -47,7 +47,7 @@ public class ProductService {
 
         for (String key : form.keySet()) {
             if (attributes.contains(key)) {
-                product.getAttributes().add(new Attribute(product, AttributeEnum.valueOf(key).getId()));
+                product.getAttributes().add(new Attribute(product, AttributeEnum.findByCode(key).getId()));
             }
         }
         productRepo.save(product);

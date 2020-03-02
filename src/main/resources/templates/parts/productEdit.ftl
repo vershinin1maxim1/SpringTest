@@ -30,8 +30,8 @@
                     <label class="custom-file-label" for="customFile">Выберите изображение товара</label>
                 </div>
             </div>
-            <#if product??><@colorPage.colorPage product/></#if>
-            <#if product??><@genderPage.genderPage gender/></#if>
+            <@colorPage.colorPage product/>
+            <@genderPage.genderPage product/>
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
             <input type="hidden" name="id" value="<#if product??>${product.id}</#if>" />
             <div class="form-group">

@@ -9,7 +9,9 @@
 </script>
 
 <div>
-    Сортировка: <a rel="nofollow" href="?sort=name">по названию</a> <a>по цене</a>
+    Сортировка:
+    <i class="fas fa-caret-<#if (orderName?? && orderName=="ASC")>up<#else>down</#if>"></i> <a rel="nofollow" href="?sort=name&order=<#if orderName??&&orderName=="ASC">DESC<#else>ASC</#if>" <#if orderName??>style="font-weight: bold;"</#if>>по названию</a>
+    <i class="fas fa-caret-<#if  (orderPrice??&& orderPrice=="ASC")>up<#else>down</#if>"></i> <a rel="nofollow" href="?sort=price&order=<#if orderPrice??&&orderPrice=="ASC">DESC<#else>ASC</#if>" <#if orderPrice??>style="font-weight: bold;"</#if>>по цене</a>
 </div>
 <div class="card-columns">
     <#list products as product>
