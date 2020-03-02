@@ -1,10 +1,14 @@
 package com.example.sweater.controller;
 
-import com.example.sweater.domain.product.*;
 import com.example.sweater.domain.User;
+import com.example.sweater.domain.product.*;
 import com.example.sweater.repos.ProductRepo;
 import com.example.sweater.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +26,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 @Controller
 public class MainController {
+    private static final int productsOnPage = 3;
     @Autowired
     private ProductRepo productRepo;
     @Autowired
@@ -35,16 +43,29 @@ public class MainController {
     }
 
     @GetMapping({"/ochki","/ochki/**"})
-    public String main(@RequestParam(required = false,
-                    defaultValue = "") String filter, Model model, HttpServletRequest request) {
-        Iterable<Product> products;
+    public String main(@RequestParam(required = false, defaultValue = "") String filter,
+                       @RequestParam(required = false, defaultValue = "") String sort,
+                       @RequestParam(required = false, defaultValue = "") String order,
+                       @RequestParam(required = false, defaultValue = "1") Integer page,
+                       Model model,
+                       HttpServletRequest request) {
+        Page<Product> products;
         String[] codes = splitUrl(request, "/ochki");
         //тут надо доделать
         Set<Integer> attributesIds = getAttributesIds(codes);
+
+        Sort sortedBy = Sort.unsorted();
+//        String sort="";
+//        String order="";
+        if(!StringUtils.isEmpty(sort)) {
+
+            sortedBy = "ASC".equals(order) ? Sort.by(sort).ascending() : Sort.by(sort).descending();
+        }
+        Pageable pageable = PageRequest.of(page-1, productsOnPage, sortedBy);
         if (attributesIds!=null &&attributesIds.size()>0) {
-            products = productRepo.findByAttributes(attributesIds);
+            products = productRepo.findByAttributes(attributesIds, pageable);
         } else {
-            products = productRepo.findAll();
+            products = productRepo.findAll(pageable);
         }
         Product filterProduct = new Product();
         Set<Attribute> attributes = attributesIds.stream().map(s->new Attribute(filterProduct ,s)).collect(Collectors.toSet());
@@ -54,9 +75,15 @@ public class MainController {
         model.addAttribute("products", productProxys);
         //передадим искусственно созданный продукт со всемы изаполненными значениями фильтрации для заполнения фильтра
         model.addAttribute("filterProduct", new ProductProxy(filterProduct));
-        model.addAttribute("filter", filter);
+        model.addAttribute("filter", filter);//ненужно,удалить здесь и сверху
         model.addAttribute("colors", Color.values());
         model.addAttribute("genders", Gender.values());
+        int currentPage = products.getNumber() + 1;
+        int totalPages = products.getTotalPages();
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("maxPage", max(currentPage, totalPages));
+        model.addAttribute("minPage", min(currentPage, 1));
+        model.addAttribute("totalPages", totalPages);
         return "main";
     }
 

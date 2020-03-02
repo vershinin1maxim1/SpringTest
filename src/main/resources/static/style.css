@@ -1,3 +1,7 @@
 body {
     color: #113;
 }
+
+.selected {
+   background-color: #4e91c8 !important;
+}
