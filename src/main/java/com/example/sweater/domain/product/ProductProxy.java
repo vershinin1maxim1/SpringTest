@@ -1,8 +1,15 @@
 package com.example.sweater.domain.product;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.HashSet;
 import java.util.Set;
-
+@Getter
+@Setter
+@NoArgsConstructor
 public class ProductProxy {
     private Long id;
     private String description;
@@ -13,8 +20,6 @@ public class ProductProxy {
     private Set<Color> colors = new HashSet<>();
     private Set<Gender> genders = new HashSet<>();
 
-    public ProductProxy() {
-    }
 
     public ProductProxy(Product product) {
         this.id = product.getId();
@@ -36,69 +41,5 @@ public class ProductProxy {
                 }
             }
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
-    public Set<Color> getColors() {
-        return colors;
-    }
-
-    public void setColors(Set<Color> colors) {
-        this.colors = colors;
-    }
-
-    public Set<Gender> getGenders() {
-        return genders;
-    }
-
-    public void setGenders(Set<Gender> genders) {
-        this.genders = genders;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
-    public Integer getFrame() {
-        return frame;
-    }
-
-    public void setFrame(Integer frame) {
-        this.frame = frame;
     }
 }

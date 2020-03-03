@@ -1,5 +1,12 @@
 package com.example.sweater.domain.product;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@AllArgsConstructor
 public enum Gender {
     MEN("muzhskoj", "Мужской"),
     WOMEN("zhenskij", "Женский");
@@ -7,17 +14,4 @@ public enum Gender {
 
     private final String code;
     private final String name;
-
-    private Gender(String code, String name) {
-        this.code = code;
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getCode() {
-        return code;
-    }
 }

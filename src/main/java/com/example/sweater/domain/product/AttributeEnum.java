@@ -1,7 +1,13 @@
 package com.example.sweater.domain.product;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.util.StringUtils;
 
+@Getter
+@AllArgsConstructor
 public enum AttributeEnum {
     BLACK(0, Color.BLACK.getCode(), Color.class),
     WHITE(1, Color.WHITE.getCode(), Color.class),
@@ -12,13 +18,6 @@ public enum AttributeEnum {
     private final Integer id;
     private final String code;
     private final Class type;
-
-    private AttributeEnum(Integer id, String code, Class type) {
-        this.id = id;
-        this.code = code;
-        this.type = type;
-
-    }
 
     public static AttributeEnum findById(Integer id) {
         if (id != null) {
@@ -44,17 +43,6 @@ public enum AttributeEnum {
         return null;
     }
 
-    public Class getType() {
-        return type;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public Integer getId() {
-        return id;
-    }
 
     //    private Set<Attribute> getAttributesEnumSetByAttrStrSet(Set<String> attributes){
 //        HashSet<Attribute> result =new HashSet();

@@ -1,6 +1,10 @@
 package com.example.sweater.domain.product;
 
 import com.example.sweater.domain.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -9,6 +13,9 @@ import java.net.Inet4Address;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Attribute {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -19,9 +26,6 @@ public class Attribute {
     @Column(name = "attribute_id")
     private Integer attributeId;
 
-    public Attribute() {
-    }
-
     public Attribute(Product product, Integer attributeId) {
         this.product=product;
         this.attributeId=attributeId;
@@ -29,29 +33,5 @@ public class Attribute {
 
     public Attribute(Product product) {
         this.product=product;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Integer getAttributeId() {
-        return attributeId;
-    }
-
-    public void setAttributeId(Integer attributeId) {
-        this.attributeId = attributeId;
     }
 }

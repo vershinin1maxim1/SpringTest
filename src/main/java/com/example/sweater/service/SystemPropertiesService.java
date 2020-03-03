@@ -1,6 +1,5 @@
 package com.example.sweater.service;
-import org.apache.log4j.Logger;
-import com.example.sweater.domain.product.Product;
+import lombok.extern.log4j.Log4j;
 import com.example.sweater.repos.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,8 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 @Service
+@Log4j
 public class SystemPropertiesService {
-    private static final Logger LOG = Logger.getLogger(SystemPropertiesService.class);
     @Autowired
     private ProductRepo productRepo;
     //обновляет параметры фильтра.не знаю, как это будет работать на сервере и нормально ли это, нужно будет еще почитать, надо бы еще вызов в постконструкт запихать и посмотреть когда вызывается
@@ -27,7 +26,7 @@ public class SystemPropertiesService {
             writer.flush();
         }
         catch(IOException ex){
-            LOG.error("Не смог записать SystemProperties в файл конфигурации");
+            log.error("Не смог записать SystemProperties в файл конфигурации");
         }
     }
 }
