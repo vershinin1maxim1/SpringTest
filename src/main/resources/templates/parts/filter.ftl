@@ -13,15 +13,17 @@
 <script type="text/javascript" charset="utf-8">
 
     $(document).ready(function () {
-        $(".js-range-slider").ionRangeSlider({
-            type: "integer",
-            grid: true,
+        $( "#slider-range" ).slider({
+            range: true,
             min: 0,
-            max: 1000,
-            from: 200,
-            to: 800,
-            prefix: "$"
+            max: 500,
+            values: [ 75, 300 ],
+            slide: function( event, ui ) {
+                $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+            }
         });
+        $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+            " - $" + $( "#slider-range" ).slider( "values", 1 ) );
         // alert("sad");
         // alert();
         $("#searchButton").click(function (e) {
@@ -63,8 +65,13 @@
                                 <input type="text" name="name" class="form-control" value="${filter?ifExists}" placeholder="Поиск по имени">
                             </div>
                             <div class="container-fluid col-xs-12">
-ertyert
-                                <input type="text" class="js-range-slider" name="my_range" value="" />
+                                <p>
+                                    <label for="amount">Price range:</label>
+                                    <input type="text" id="amount" readonly style="border:0; color:#0662f6; font-weight:bold;">
+                                </p>
+
+                                <div id="slider-range"></div>
+
                             </div>
                             <@colorPage.colorPage filterProduct/>
                             <@genderPage.genderPage filterProduct/>
