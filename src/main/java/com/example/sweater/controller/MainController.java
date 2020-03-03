@@ -4,6 +4,7 @@ import com.example.sweater.domain.SystemPropertiesConfig;
 import com.example.sweater.domain.product.*;
 import com.example.sweater.repos.ProductRepo;
 import com.example.sweater.service.SystemPropertiesService;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-
+@Log4j
 @Controller
 public class MainController {
     private static final int productsOnPage = 3;
@@ -48,6 +49,7 @@ public class MainController {
                        @RequestParam(required = false, defaultValue = "1") Integer page,
                        Model model,
                        HttpServletRequest request) {
+        log.warn("ТЕСТОВОЕ СООБЩЕНИЕ");
         Page<Product> products;
         String[] codes = splitUrl(request, "/ochki");
         //тут надо доделать
