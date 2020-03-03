@@ -18,6 +18,12 @@ public interface ProductRepo extends PagingAndSortingRepository<Product, Long> {
     List<Product> findByName(String Name);
 //     List<Product> findDistinctByAttributes(Set<Attribute> attributes);
 
+//    Integer find
+@Query(value = "SELECT MAX(p.price) FROM Product p")
+public Integer findMaxPrice();
+@Query(value = "SELECT MIN(p.price) FROM Product p")
+public Integer findMinPrice();
+
     @Query(value = "SELECT DISTINCT p FROM Product p JOIN Attribute a ON a.product=p WHERE a.attributeId IN (:attributeIds)")
     public Page<Product> findByAttributes(@Param("attributeIds") Set<Integer> attributeIds,  Pageable pageable);//сюда добавить параметр , Pageable pageable А ВОЗВРАЩАЕТ Page<Product>
 }

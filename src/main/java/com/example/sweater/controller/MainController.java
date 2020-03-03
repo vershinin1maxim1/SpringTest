@@ -5,6 +5,7 @@ import com.example.sweater.domain.User;
 import com.example.sweater.domain.product.*;
 import com.example.sweater.repos.ProductRepo;
 import com.example.sweater.service.ProductService;
+import com.example.sweater.service.SystemPropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,6 +39,8 @@ public class MainController {
     private ProductRepo productRepo;
     @Autowired
     private SystemPropertiesConfig systemPropertiesConfig;
+    @Autowired
+    private SystemPropertiesService systemPropertiesService;
 
 
     @GetMapping("/")
@@ -88,8 +92,11 @@ public class MainController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("orderName", "name".equals(sort)?order:null);
         model.addAttribute("orderPrice", "price".equals(sort)?order:null);
+
         model.addAttribute("filterMaxPrice", systemPropertiesConfig.getMaxPrice());
-        systemPropertiesConfig.setMaxPrice(23);
+        model.addAttribute("filterMinPrice", systemPropertiesConfig.getMinPrice());
+
+        systemPropertiesService.fillSystemProperties();//убрать это отсюда.
         return "main";
     }
 

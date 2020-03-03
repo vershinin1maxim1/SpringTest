@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class SystemPropertiesConfig {
 
     private int maxPrice;
+    private int minPrice;
 
     public int getMaxPrice() {
         return maxPrice;
@@ -17,5 +18,13 @@ public class SystemPropertiesConfig {
 
     public void setMaxPrice(int maxPrice) {
         this.maxPrice = maxPrice;
+    }
+
+    public int getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(int minPrice) {
+        this.minPrice = minPrice;
     }
 }
