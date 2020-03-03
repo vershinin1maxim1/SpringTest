@@ -89,6 +89,7 @@ public class MainController {
         model.addAttribute("orderName", "name".equals(sort)?order:null);
         model.addAttribute("orderPrice", "price".equals(sort)?order:null);
         model.addAttribute("filterMaxPrice", systemPropertiesConfig.getMaxPrice());
+        systemPropertiesConfig.setMaxPrice(23);
         return "main";
     }
 
