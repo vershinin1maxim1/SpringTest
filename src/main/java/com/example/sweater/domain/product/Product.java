@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
@@ -17,6 +18,10 @@ public class Product {
     private String description;
     @Length(max = 255, message = "Имя слишком длинное")
     private String name;
+
+    private Integer price;//цена
+
+    private Integer frame;//размер рамки
 
     private String filename;
 
@@ -69,5 +74,21 @@ public class Product {
 
     public void setAttributes(Set<Attribute> attributes) {
         this.attributes = attributes;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public Integer getFrame() {
+        return frame;
+    }
+
+    public void setFrame(Integer frame) {
+        this.frame = frame;
     }
 }

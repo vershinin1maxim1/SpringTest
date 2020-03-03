@@ -7,6 +7,8 @@ public class ProductProxy {
     private Long id;
     private String description;
     private String name;
+    private Integer price;
+    private Integer frame;
     private String filename;
     private Set<Color> colors = new HashSet<>();
     private Set<Gender> genders = new HashSet<>();
@@ -19,6 +21,8 @@ public class ProductProxy {
         this.description = product.getDescription();
         this.name = product.getName();
         this.filename = product.getFilename();
+        this.price = product.getPrice();
+        this.frame = product.getFrame();
         for (Attribute attr : product.getAttributes()) {
             AttributeEnum attrEnum = AttributeEnum.findById(attr.getAttributeId());
             if (attrEnum != null) {
@@ -80,5 +84,21 @@ public class ProductProxy {
 
     public void setGenders(Set<Gender> genders) {
         this.genders = genders;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public Integer getFrame() {
+        return frame;
+    }
+
+    public void setFrame(Integer frame) {
+        this.frame = frame;
     }
 }

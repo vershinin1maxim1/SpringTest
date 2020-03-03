@@ -6,6 +6,8 @@ create table product (
     name varchar(255),
     description varchar(2048),
     attribute_id int8,
+    price int4,
+    frame int4,
     primary key (id)
 );
 
