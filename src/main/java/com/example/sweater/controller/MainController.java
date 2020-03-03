@@ -89,7 +89,7 @@ public class MainController {
         model.addAttribute("filterMaxPrice", systemPropertiesConfig.getMaxPrice());
         model.addAttribute("filterMinPrice", systemPropertiesConfig.getMinPrice());
 
-        systemPropertiesService.fillSystemProperties();//убрать это отсюда.
+
         return "main";
     }
 
