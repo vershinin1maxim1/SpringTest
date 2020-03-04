@@ -17,4 +17,6 @@ public class SystemPropertiesConfig {
 
     private int maxPrice;
     private int minPrice;
+    private int maxFrame;
+    private int minFrame;
 }

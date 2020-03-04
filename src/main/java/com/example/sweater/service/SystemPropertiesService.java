@@ -13,6 +13,8 @@ public class SystemPropertiesService {
     @Autowired
     private ProductRepo productRepo;
     //обновляет параметры фильтра.не знаю, как это будет работать на сервере и нормально ли это, нужно будет еще почитать, надо бы еще вызов в постконструкт запихать и посмотреть когда вызывается
+    //так нельзя,сервак перегружается и подлагивает
+    //перенесьи в тесты
     public void fillSystemProperties() {
 
 
@@ -22,6 +24,8 @@ public class SystemPropertiesService {
             StringBuilder text=new StringBuilder();
             text.append("properties.maxPrice=").append(productRepo.findMaxPrice()).append("\n");
             text.append("properties.minPrice=").append(productRepo.findMinPrice()).append("\n");
+            text.append("properties.maxFrame=").append(productRepo.findMaxFrame()).append("\n");
+            text.append("properties.minFrame=").append(productRepo.findMinFrame()).append("\n");
             writer.append(text.toString());
             writer.flush();
         }

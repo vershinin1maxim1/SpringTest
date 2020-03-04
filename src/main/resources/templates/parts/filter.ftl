@@ -1,59 +1,61 @@
 <#import "color.ftl" as colorPage>
 <#import "gender.ftl" as genderPage>
 
-
-<!--Plugin JavaScript file-->
-
-<#--<link rel="stylesheet" href="css/jquery-ui-1.8.19.custom.css">-->
-<#--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.css">-->
-<#--<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>-->
-<#--<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>-->
-<#--аджакс надо будет куда-то вынести наружу-->
-
 <script type="text/javascript" charset="utf-8">
+var minPrice=${filterMinPrice?c};
+var maxPrice=${filterMaxPrice?c};
+var maxFrame=${filterMaxFrame?c};
+var minFrame=${filterMinFrame?c};
 
-    $(document).ready(function () {
-        var min=${filterMinPrice?c};
-        var max=${filterMaxPrice?c};
-        debugger;
-        $( "#priceSlider" ).slider({
-            range: true,
-            min: min,
-            max:  max,
-            values: [ min,  max],
-            slide: function( event, ui ) {
-                $( "#priceFilter" ).val(  ui.values[ 0 ] + " - " + ui.values[ 1 ] + " Р");
-            }
-        });
-        $( "#priceFilter" ).val($( "#priceSlider" ).slider( "values", 0 ) +
-            " - " + $( "#priceSlider" ).slider( "values", 1 )+ " Р" );
-        // alert("sad");
-        // alert();
-        $("#searchButton").click(function (e) {
-            // alert("asda");
-            window.location.replace(makeSearchFunction());
-        });
+$(document).ready(function () {
+    $( "#priceSlider" ).slider({
+        range: true,
+        min: minPrice,
+        max: maxPrice,
+        values: [${setFilterMinPrice?c}, ${setFilterMaxPrice?c}],
+        slide: function (event, ui) {
+            $("#priceFilter").text(ui.values[0] + " - " + ui.values[1] + " Р");
+        }
     });
+    $("#priceFilter").text($("#priceSlider").slider("values", 0) + " - " + $("#priceSlider").slider("values", 1)+ " Р");
 
-    function makeSearchFunction(){
-        var result="/ochki";
+    $( "#frameSlider" ).slider({
+        range: true,
+        min: minFrame,
+        max: maxFrame,
+        values: [${setFilterMinFrame?c}, ${setFilterMaxFrame?c}],
+        slide: function (event, ui) {
+            $("#frameFilter").text(ui.values[0] + " - " + ui.values[1] + " Р");
+        }
+    });
+    $("#frameFilter").text($("#frameSlider").slider("values", 0) + " - " + $("#frameSlider").slider("values", 1));
 
-        var searchFilterElements=$("#filterForm").find(".searchFilterElement");
+    $("#searchButton").click(function (e) {
+        window.location.replace(makeSearchFunction());
+    });
+});
 
-            for(var i=0;i< searchFilterElements.length;i++){
-                debugger;
-                if($(searchFilterElements[i]).is(":checked")) {
-                    debugger;
-                    result += "/" + searchFilterElements[i]["name"];
-                }
-            }
-
-            debugger;
-
-
-        debugger;
-        return result;
+function makeSearchFunction(){
+    var result = "/ochki";
+    var currentMinPrice= $("#priceSlider").slider("values", 0);
+    var currentMaxPrice = $("#priceSlider").slider("values", 1);
+    if(currentMinPrice!==minPrice||currentMaxPrice!==maxPrice){
+        result+="/price/"+currentMinPrice+"-"+currentMaxPrice;
     }
+    var currentMinFrame = $("#frameSlider").slider("values", 0);
+    var currentMaxFrame = $("#frameSlider").slider("values", 1);
+    if(currentMinFrame!==minFrame||currentMaxFrame!==maxFrame){
+        result+="/razmer_ramki/"+currentMinFrame+"-"+currentMaxFrame;
+    }
+    debugger;
+    var searchFilterElements = $("#filterForm").find(".searchFilterElement");
+    for (var i = 0; i < searchFilterElements.length; i++) {
+        if ($(searchFilterElements[i]).is(":checked")) {
+            result += "/" + searchFilterElements[i]["name"];
+        }
+    }
+    return result;
+}
 </script>
 <div class="col-sm-3">
     <div class="card bg-light">
@@ -68,13 +70,14 @@
                                 <input type="text" name="name" class="form-control" value="${filter?ifExists}" placeholder="Поиск по имени">
                             </div>
                             <div class="container-fluid col-xs-12">
-                                <p>
-                                    <label for="priceFilter">Цена:</label>
-                                    <input type="text" id="priceFilter" readonly style="border:0; color:#0662f6; font-weight:bold;">
-                                </p>
-
+                                <label for="priceFilter">Цена:</label>
+                                <label id="priceFilter"></label>
                                 <div id="priceSlider"></div>
-
+                            </div>
+                            <div class="container-fluid col-xs-12">
+                                <label for="frameFilter">Размер рамки:</label>
+                                <label id="frameFilter"></label>
+                                <div id="frameSlider"></div>
                             </div>
                             <@colorPage.colorPage filterProduct/>
                             <@genderPage.genderPage filterProduct/>

@@ -28,16 +28,18 @@ public class ProductProxy {
         this.filename = product.getFilename();
         this.price = product.getPrice();
         this.frame = product.getFrame();
-        for (Attribute attr : product.getAttributes()) {
-            AttributeEnum attrEnum = AttributeEnum.findById(attr.getAttributeId());
-            if (attrEnum != null) {
-                Class type = attrEnum.getType();
-                if (type.equals(Color.class)) {
-                    this.colors.add(Color.valueOf(attrEnum.toString()));
-                    continue;
-                }
-                if (type.equals(Gender.class)) {
-                    this.genders.add(Gender.valueOf(attrEnum.toString()));
+        if(product.getAttributes()!=null) {
+            for (Attribute attr : product.getAttributes()) {
+                AttributeEnum attrEnum = AttributeEnum.findById(attr.getAttributeId());
+                if (attrEnum != null) {
+                    Class type = attrEnum.getType();
+                    if (type.equals(Color.class)) {
+                        this.colors.add(Color.valueOf(attrEnum.toString()));
+                        continue;
+                    }
+                    if (type.equals(Gender.class)) {
+                        this.genders.add(Gender.valueOf(attrEnum.toString()));
+                    }
                 }
             }
         }
