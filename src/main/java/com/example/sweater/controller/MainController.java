@@ -50,6 +50,7 @@ public class MainController {
                        Model model,
                        HttpServletRequest request) {
         log.warn("ТЕСТОВОЕ СООБЩЕНИЕ");
+        systemPropertiesService.fillSystemProperties();//убрать это отсюда.возможно сделать постконструкт, проверять при добавлении товаров
         Page<Product> products;
         String[] codes = splitUrl(request, "/ochki");
         //тут надо доделать

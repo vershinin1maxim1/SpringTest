@@ -13,17 +13,20 @@
 <script type="text/javascript" charset="utf-8">
 
     $(document).ready(function () {
-        $( "#slider-range" ).slider({
+        var min=${filterMinPrice?c};
+        var max=${filterMaxPrice?c};
+        debugger;
+        $( "#priceSlider" ).slider({
             range: true,
-            min: 0,
-            max: 500,
-            values: [ 75, 300 ],
+            min: min,
+            max:  max,
+            values: [ min,  max],
             slide: function( event, ui ) {
-                $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+                $( "#priceFilter" ).val(  ui.values[ 0 ] + " - " + ui.values[ 1 ] + " Р");
             }
         });
-        $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-            " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+        $( "#priceFilter" ).val($( "#priceSlider" ).slider( "values", 0 ) +
+            " - " + $( "#priceSlider" ).slider( "values", 1 )+ " Р" );
         // alert("sad");
         // alert();
         $("#searchButton").click(function (e) {
@@ -59,25 +62,25 @@
 <#--            <h5 class="card-title">Light card title</h5>-->
 <#--            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
                 <div class="form-row">
-                    <div class="form-group col-sd-12">
+<#--                    <div class="form-group col-sd-12">-->
                         <form id="filterForm" method="get" action="/ochki" class="form-inline">
                             <div class="col-xs-12">
                                 <input type="text" name="name" class="form-control" value="${filter?ifExists}" placeholder="Поиск по имени">
                             </div>
                             <div class="container-fluid col-xs-12">
                                 <p>
-                                    <label for="amount">Price range:</label>
-                                    <input type="text" id="amount" readonly style="border:0; color:#0662f6; font-weight:bold;">
+                                    <label for="priceFilter">Цена:</label>
+                                    <input type="text" id="priceFilter" readonly style="border:0; color:#0662f6; font-weight:bold;">
                                 </p>
 
-                                <div id="slider-range"></div>
+                                <div id="priceSlider"></div>
 
                             </div>
                             <@colorPage.colorPage filterProduct/>
                             <@genderPage.genderPage filterProduct/>
                             <a id="searchButton" class="btn btn-primary ml-2">Поиск</a>
                         </form>
-                    </div>
+<#--                    </div>-->
                 </div>
 
         </div>

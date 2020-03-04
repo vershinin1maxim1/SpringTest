@@ -47,7 +47,7 @@ public class AdminPageController {
             @RequestParam("file") MultipartFile file,
             @RequestParam Map<String, String> form
     ) throws IOException {
-        systemPropertiesService.fillSystemProperties();//убрать это отсюда.
+        systemPropertiesService.fillSystemProperties();//убрать это отсюда.возможно сделать постконструкт, проверять при добавлении товаров
         productService.saveProduct(product, name, description, file, form);
         return "redirect:/user-products/edit";
     }
