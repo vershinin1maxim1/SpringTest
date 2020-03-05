@@ -1,10 +1,11 @@
 package com.example.sweater.controller;
 
 import com.example.sweater.domain.SystemPropertiesConfig;
+import com.example.sweater.domain.dao.ProductProxyFilterDao;
+import com.example.sweater.domain.dto.ProductProxyFilterDto;
 import com.example.sweater.domain.product.*;
 import com.example.sweater.repos.ProductRepo;
 import com.example.sweater.service.SystemPropertiesService;
-import com.sun.deploy.util.ArrayUtil;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,10 +30,14 @@ public class MainController {
     private static final int productsOnPage = 3;
     @Autowired
     private ProductRepo productRepo;
+//    @Autowired
+//    private ProductProxyFilterRepo productProxyFilterRepo;
     @Autowired
     private SystemPropertiesConfig systemPropertiesConfig;
     @Autowired
     private SystemPropertiesService systemPropertiesService;
+    @Autowired
+    private ProductProxyFilterDao productProxyFilterDao;
 
 
     @GetMapping("/")
@@ -51,7 +56,10 @@ public class MainController {
 //        systemPropertiesService.fillSystemProperties();//убрать это отсюда.возможно сделать постконструкт, проверять при добавлении товаров
         Page<Product> products;
         Set<Integer> attributesIds = null;
+//        ProductProxyFilterDto  productProxyFilters = productProxyFilterDao.findFirstByPrice(1001);
+        List<ProductProxyFilterDto>  productProxyFilters = productProxyFilterDao.countOfAttributes();
 
+//      new ProductProxyFilterDto (productProxyFilters.get(0));
         Integer minPrice=null;
         Integer maxPrice=null;
         Integer maxFrame=null;

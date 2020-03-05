@@ -1,5 +1,6 @@
 package com.example.sweater.domain.product;
 
+import com.example.sweater.domain.dto.ProductProxyFilterDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
