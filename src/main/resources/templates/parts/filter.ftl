@@ -33,15 +33,43 @@ $(document).ready(function () {
     $("#searchButton").click(function (e) {
         window.location.replace("/ochki"+makeSearchFunction());
     });
-    // fillFilterParams();
+    fillFilterParams();
     function fillFilterParams(){
         $.ajax({url: '/ochkiGetActualFilter'+makeSearchFunction(), type: 'GET', contentType: "application/json",
             success:function(result) {
-              debugger;
+
+             updateBadges(result);
             }});
     }
+    $("#filterForm").find(".searchFilterElement").change(function () {
+        fillFilterParams();
+    });
 });
 
+function updateBadges(result){
+    var bages = $("#filterForm").find(".badge");
+    for (var i = 0; i < bages.length; i++) {
+
+        $(bages[i]).text(getCountByAttrIdAndFilterProxy($(bages[i]).attr("attributeId"),result));
+        // $(bages[i]).val("sadasd")
+        // bages[i].text("sadad");
+    }
+    // bages.forEach(function (element) {
+    //     alert("qweqwe");
+    //      bages.val("asd");
+    //     // attributeId
+    // });
+}
+
+function getCountByAttrIdAndFilterProxy(attributeId, result){
+    for (var i = 0; i < result.length; i++) {
+        debugger;
+        if (result[i]["attributeId"] == attributeId) {
+            return result[i]["count"];
+        }
+    }
+    return 0;
+}
 function makeSearchFunction(){
     var result = "";
     var currentMinPrice= $("#priceSlider").slider("values", 0);

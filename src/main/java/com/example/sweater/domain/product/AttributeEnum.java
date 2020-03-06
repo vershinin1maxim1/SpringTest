@@ -9,11 +9,12 @@ import org.springframework.util.StringUtils;
 @Getter
 @AllArgsConstructor
 public enum AttributeEnum {
-    BLACK(0, Color.BLACK.getCode(), Color.class),
-    WHITE(1, Color.WHITE.getCode(), Color.class),
-    RED(2, Color.RED.getCode(), Color.class),
-    MEN(3, Gender.MEN.getCode(), Gender.class),
-    WOMEN(4, Gender.WOMEN.getCode(), Gender.class);
+    //убедиться, что id не повторяются
+    BLACK(Color.BLACK.getId(), Color.BLACK.getCode(), Color.class),
+    WHITE(Color.WHITE.getId(), Color.WHITE.getCode(), Color.class),
+    RED(Color.RED.getId(), Color.RED.getCode(), Color.class),
+    MEN(Gender.MEN.getId(), Gender.MEN.getCode(), Gender.class),
+    WOMEN(Gender.WOMEN.getId(), Gender.WOMEN.getCode(), Gender.class);
 
     private final Integer id;
     private final String code;

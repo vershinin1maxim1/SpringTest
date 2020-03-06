@@ -1,7 +1,6 @@
 package com.example.sweater.controller;
 
 import com.example.sweater.domain.SystemPropertiesConfig;
-import com.example.sweater.domain.dao.ProductProxyFilterDao;
 import com.example.sweater.domain.dto.ProductProxyFilterDto;
 import com.example.sweater.domain.product.*;
 import com.example.sweater.repos.ProductRepo;
@@ -37,8 +36,6 @@ public class MainController {
     private SystemPropertiesConfig systemPropertiesConfig;
     @Autowired
     private SystemPropertiesService systemPropertiesService;
-    @Autowired
-    private ProductProxyFilterDao productProxyFilterDao;
 
 
     @GetMapping("/")
@@ -48,12 +45,56 @@ public class MainController {
 
     @GetMapping({"/ochkiGetActualFilter", "/ochkiGetActualFilter/**"})
     @ResponseBody
-    public  List<ProductProxyFilterDto>  getActualFilte(@RequestParam(required = false, defaultValue = "") String filter) {
+    public  List<ProductProxyFilterDto>  getActualFilter(@RequestParam(required = false, defaultValue = "") String filter, HttpServletRequest request) {
+        Set<Integer> attributesIds = null;
         Integer minPrice=null;
         Integer maxPrice=null;
         Integer maxFrame=null;
         Integer minFrame=null;
-        Set<Integer> attributesIds = null;
+        String[] codes = splitUrl(request, "/ochkiGetActualFilter");
+        if(codes!=null&&codes.length>0){
+            ArrayList<String> paramList =new ArrayList<>(Arrays.asList(codes));
+            ListIterator<String> paramIterator= paramList.listIterator();
+            if(StringUtils.isEmpty( paramIterator.next())) {
+                paramIterator.remove();
+            }
+
+
+            if (paramIterator.hasNext()) {
+                if ("price".equals(paramIterator.next())) {
+                    paramIterator.remove();
+                    if (paramIterator.hasNext()) {
+                        String[] split = paramIterator.next().split("-");
+                        paramIterator.remove();
+                        if (split.length == 2) {
+                            minPrice = Integer.valueOf(split[0]);
+                            maxPrice = Integer.valueOf(split[1]);
+                        }
+                    }
+                } else {
+                    paramIterator.previous();
+                }
+            }
+
+            if (paramIterator.hasNext()) {
+                if ("razmer_ramki".equals(paramIterator.next())) {
+                    paramIterator.remove();
+                    if (paramIterator.hasNext()) {
+                        String[] split = paramIterator.next().split("-");
+                        paramIterator.remove();
+                        if (split.length == 2) {
+                            minFrame = Integer.parseInt(split[0]);
+                            maxFrame = Integer.parseInt(split[1]);
+                        }
+                    }
+                } else {
+                    paramIterator.previous();
+                }
+            }
+            //тут надо доделать
+            attributesIds = getAttributesIds(paramIterator);
+        }
+        Sort sortedBy = Sort.unsorted();
         List<ProductProxyFilterDto>  productProxyFilters = productRepo.countOfAttributesByParam(attributesIds, minPrice, maxPrice, minFrame, maxFrame);
         productProxyFilters.add(productRepo.countAllByParam(attributesIds, minPrice, maxPrice, minFrame, maxFrame));
         return productProxyFilters;
@@ -70,10 +111,6 @@ public class MainController {
 //        systemPropertiesService.fillSystemProperties();//убрать это отсюда.возможно сделать постконструкт, проверять при добавлении товаров
         Page<Product> products;
         Set<Integer> attributesIds = null;
-//        ProductProxyFilterDto  productProxyFilters = productProxyFilterDao.findFirstByPrice(1001);
-
-
-//      new ProductProxyFilterDto (productProxyFilters.get(0));
         Integer minPrice=null;
         Integer maxPrice=null;
         Integer maxFrame=null;
