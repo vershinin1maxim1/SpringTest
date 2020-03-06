@@ -31,12 +31,19 @@ $(document).ready(function () {
     $("#frameFilter").text($("#frameSlider").slider("values", 0) + " - " + $("#frameSlider").slider("values", 1));
 
     $("#searchButton").click(function (e) {
-        window.location.replace(makeSearchFunction());
+        window.location.replace("/ochki"+makeSearchFunction());
     });
+    // fillFilterParams();
+    function fillFilterParams(){
+        $.ajax({url: '/ochkiGetActualFilter'+makeSearchFunction(), type: 'GET', contentType: "application/json",
+            success:function(result) {
+              debugger;
+            }});
+    }
 });
 
 function makeSearchFunction(){
-    var result = "/ochki";
+    var result = "";
     var currentMinPrice= $("#priceSlider").slider("values", 0);
     var currentMaxPrice = $("#priceSlider").slider("values", 1);
     if(currentMinPrice!==minPrice||currentMaxPrice!==maxPrice){
@@ -47,7 +54,6 @@ function makeSearchFunction(){
     if(currentMinFrame!==minFrame||currentMaxFrame!==maxFrame){
         result+="/razmer_ramki/"+currentMinFrame+"-"+currentMaxFrame;
     }
-    debugger;
     var searchFilterElements = $("#filterForm").find(".searchFilterElement");
     for (var i = 0; i < searchFilterElements.length; i++) {
         if ($(searchFilterElements[i]).is(":checked")) {

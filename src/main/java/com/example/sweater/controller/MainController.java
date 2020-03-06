@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -45,6 +46,19 @@ public class MainController {
         return "greeting";
     }
 
+    @GetMapping({"/ochkiGetActualFilter", "/ochkiGetActualFilter/**"})
+    @ResponseBody
+    public  List<ProductProxyFilterDto>  getActualFilte(@RequestParam(required = false, defaultValue = "") String filter) {
+        Integer minPrice=null;
+        Integer maxPrice=null;
+        Integer maxFrame=null;
+        Integer minFrame=null;
+        Set<Integer> attributesIds = null;
+        List<ProductProxyFilterDto>  productProxyFilters = productRepo.countOfAttributesByParam(attributesIds, minPrice, maxPrice, minFrame, maxFrame);
+        productProxyFilters.add(productRepo.countAllByParam(attributesIds, minPrice, maxPrice, minFrame, maxFrame));
+        return productProxyFilters;
+    }
+
     @GetMapping({"/ochki","/ochki/**"})
     public String main(@RequestParam(required = false, defaultValue = "") String filter,
                        @RequestParam(required = false, defaultValue = "") String sort,
@@ -57,7 +71,7 @@ public class MainController {
         Page<Product> products;
         Set<Integer> attributesIds = null;
 //        ProductProxyFilterDto  productProxyFilters = productProxyFilterDao.findFirstByPrice(1001);
-        List<ProductProxyFilterDto>  productProxyFilters = productProxyFilterDao.countOfAttributes();
+
 
 //      new ProductProxyFilterDto (productProxyFilters.get(0));
         Integer minPrice=null;
