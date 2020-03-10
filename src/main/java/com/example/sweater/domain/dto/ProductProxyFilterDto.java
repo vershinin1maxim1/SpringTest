@@ -1,9 +1,12 @@
 package com.example.sweater.domain.dto;
 
+import lombok.Value;
+
 //@Projection(name = "ProductProxyFilterDaoImpl", types = { Product.class })
-public interface ProductProxyFilterDto {
+@Value
+public class ProductProxyFilterDto {
 //    @Value("#{target.name}")
-    Integer getAttributeId();
+    private Integer attributeId;
 //    @Value("#{target.price}")
-    Long getCount();
+    private Long count;
 }

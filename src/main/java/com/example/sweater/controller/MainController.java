@@ -49,12 +49,10 @@ public class MainController {
     public  List<ProductProxyFilterDto>  getActualFilter(@RequestParam(required = false, defaultValue = "") String filter, HttpServletRequest request) {
         Map<String,Integer> params=new HashMap<>();
         Set<AttributeEnum>  attributes =fillParams(request, "/ochkiGetActualFilter", params);
-        Set<Integer> attributesIds = attributes==null?null:attributes.stream().map(AttributeEnum::getId).collect(Collectors.toSet());
-//        attributesIds=attributesIds.size()>0?attributesIds:null;
-        Set<Integer> groupIds = attributes.stream().map(AttributeEnum::getGroupId).collect(Collectors.toSet());
-        groupIds=groupIds.size()>0?groupIds:null;
-        List<ProductProxyFilterDto>  productProxyFilters = productRepo.countOfAttributesByParam(attributesIds, groupIds, params.get("minPrice"), params.get("maxPrice"), params.get("minFrame"), params.get("maxFrame"));
-        productProxyFilters.add(productRepo.countAllByParam(attributesIds, groupIds, params.get("minPrice"), params.get("maxPrice"), params.get("minFrame"), params.get("maxFrame")));
+        Collection<List<Integer>>  attributeIds = groupAttributesByGroupId(attributes);
+        List<ProductProxyFilterDto>  productProxyFilters = productDAO.countOfAttributesByParam(attributeIds, params.get("minPrice"), params.get("maxPrice"), params.get("minFrame"), params.get("maxFrame"));
+        Long allCount = productDAO.countByParams(attributeIds, params.get("minPrice"), params.get("maxPrice"), params.get("minFrame"), params.get("maxFrame"));
+        productProxyFilters.add(new ProductProxyFilterDto(-1, allCount));
         return productProxyFilters;
     }
 
@@ -125,26 +123,14 @@ public class MainController {
         Product filterProduct = new Product();
         Map<String,Integer> params=new HashMap<>();
         Set<AttributeEnum>  attributes =fillParams(request, "/ochki", params);
-        Set<Integer> attributesIds = attributes==null?null:attributes.stream().map(AttributeEnum::getId).collect(Collectors.toSet());
-//        attributesIds=attributes.size()>0?attributesIds:null;
-        Set<Integer> groupIds = attributes==null?null:attributes.stream().map(AttributeEnum::getGroupId).collect(Collectors.toSet());
-//        groupIds=groupIds.size()>0?groupIds:null;
-        Sort sortedBy = Sort.unsorted();
-        if(!StringUtils.isEmpty(sort)) {
-            sortedBy = "DESC".equals(order) ? Sort.by(sort).descending() : Sort.by(sort).ascending();
-        }
-        Pageable pageable = PageRequest.of(page-1, productsOnPage, sortedBy);
-//        products = productRepo.findByAttributes(attributesIds, groupIds, params.get("minPrice"), params.get("maxPrice"), params.get("minFrame"), params.get("maxFrame"), pageable);
+        boolean desc="DESC".equals(order);
+        Pageable pageable = PageRequest.of(page-1, productsOnPage);
         Collection<List<Integer>>  attributeIds = groupAttributesByGroupId(attributes);
-//        ArrayList<Integer> integers = new ArrayList<>();
-//        integers.add(0);
-//        attributeIds.add(integers);
-        products = productDAO.getPageByParams(attributeIds, pageable);
+        products = productDAO.getPageByParams(attributeIds, params.get("minPrice"), params.get("maxPrice"), params.get("minFrame"), params.get("maxFrame"), pageable, sort, desc);
         if (attributes!=null &&attributes.size()>0) {
             Set<Attribute> attributesDb = attributes.stream().map(s -> new Attribute(filterProduct, s)).collect(Collectors.toSet());
             filterProduct.setAttributes(attributesDb);
         }
-
         ArrayList<ProductProxy> productProxys= new ArrayList();
         products.forEach(s->productProxys.add(new ProductProxy(s)));
         model.addAttribute("products", productProxys);
@@ -177,6 +163,9 @@ public class MainController {
 
     private Collection<List<Integer>>  groupAttributesByGroupId(Set<AttributeEnum> attributes) {
         Map<Integer, List<Integer>> mapGroupId = new HashMap<>();
+        if(attributes==null){
+            return null;
+        }
         for (AttributeEnum attribute : attributes) {
             Integer groupId = attribute.getGroupId();
             List<Integer> attrValues = new ArrayList<>();
