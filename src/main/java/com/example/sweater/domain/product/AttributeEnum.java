@@ -10,15 +10,16 @@ import org.springframework.util.StringUtils;
 @AllArgsConstructor
 public enum AttributeEnum {
     //убедиться, что id не повторяются
-    BLACK(Color.BLACK.getId(), Color.BLACK.getCode(), Color.class),
-    WHITE(Color.WHITE.getId(), Color.WHITE.getCode(), Color.class),
-    RED(Color.RED.getId(), Color.RED.getCode(), Color.class),
-    MEN(Gender.MEN.getId(), Gender.MEN.getCode(), Gender.class),
-    WOMEN(Gender.WOMEN.getId(), Gender.WOMEN.getCode(), Gender.class);
+    BLACK(Color.BLACK.getId(), Color.BLACK.getCode(), Color.class, 0),
+    WHITE(Color.WHITE.getId(), Color.WHITE.getCode(), Color.class, 0),
+    RED(Color.RED.getId(), Color.RED.getCode(), Color.class, 0),
+    MEN(Gender.MEN.getId(), Gender.MEN.getCode(), Gender.class, 1),
+    WOMEN(Gender.WOMEN.getId(), Gender.WOMEN.getCode(), Gender.class, 1);
 
     private final Integer id;
     private final String code;
     private final Class type;
+    private final Integer groupId;//разделяем атрибуты на группы для корректного поиска)
 
     public static AttributeEnum findById(Integer id) {
         if (id != null) {

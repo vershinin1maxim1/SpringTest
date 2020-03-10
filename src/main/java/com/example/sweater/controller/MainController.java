@@ -30,8 +30,6 @@ public class MainController {
     private static final int productsOnPage = 3;
     @Autowired
     private ProductRepo productRepo;
-//    @Autowired
-//    private ProductProxyFilterRepo productProxyFilterRepo;
     @Autowired
     private SystemPropertiesConfig systemPropertiesConfig;
     @Autowired
@@ -46,19 +44,30 @@ public class MainController {
     @GetMapping({"/ochkiGetActualFilter", "/ochkiGetActualFilter/**"})
     @ResponseBody
     public  List<ProductProxyFilterDto>  getActualFilter(@RequestParam(required = false, defaultValue = "") String filter, HttpServletRequest request) {
-        Set<Integer> attributesIds = null;
+        Map<String,Integer> params=new HashMap<>();
+        Set<AttributeEnum>  attributes =fillParams(request, "/ochkiGetActualFilter", params);
+        Set<Integer> attributesIds = attributes==null?null:attributes.stream().map(AttributeEnum::getId).collect(Collectors.toSet());
+//        attributesIds=attributesIds.size()>0?attributesIds:null;
+        Set<Integer> groupIds = attributes.stream().map(AttributeEnum::getGroupId).collect(Collectors.toSet());
+        groupIds=groupIds.size()>0?groupIds:null;
+        List<ProductProxyFilterDto>  productProxyFilters = productRepo.countOfAttributesByParam(attributesIds, groupIds, params.get("minPrice"), params.get("maxPrice"), params.get("minFrame"), params.get("maxFrame"));
+        productProxyFilters.add(productRepo.countAllByParam(attributesIds, groupIds, params.get("minPrice"), params.get("maxPrice"), params.get("minFrame"), params.get("maxFrame")));
+        return productProxyFilters;
+    }
+
+    private Set<AttributeEnum> fillParams(HttpServletRequest request, String startUrl, Map<String,Integer> params){
+        Set<AttributeEnum> attributes = new HashSet<>();
         Integer minPrice=null;
         Integer maxPrice=null;
-        Integer maxFrame=null;
         Integer minFrame=null;
-        String[] codes = splitUrl(request, "/ochkiGetActualFilter");
+        Integer maxFrame=null;
+        String[] codes = splitUrl(request, startUrl);
         if(codes!=null&&codes.length>0){
             ArrayList<String> paramList =new ArrayList<>(Arrays.asList(codes));
             ListIterator<String> paramIterator= paramList.listIterator();
             if(StringUtils.isEmpty( paramIterator.next())) {
                 paramIterator.remove();
             }
-
 
             if (paramIterator.hasNext()) {
                 if ("price".equals(paramIterator.next())) {
@@ -91,13 +100,13 @@ public class MainController {
                     paramIterator.previous();
                 }
             }
-            //тут надо доделать
-            attributesIds = getAttributesIds(paramIterator);
+            attributes = getAttributes(paramIterator);
         }
-        Sort sortedBy = Sort.unsorted();
-        List<ProductProxyFilterDto>  productProxyFilters = productRepo.countOfAttributesByParam(attributesIds, minPrice, maxPrice, minFrame, maxFrame);
-        productProxyFilters.add(productRepo.countAllByParam(attributesIds, minPrice, maxPrice, minFrame, maxFrame));
-        return productProxyFilters;
+        params.put("minPrice", minPrice);
+        params.put("maxPrice", maxPrice);
+        params.put("minFrame", minFrame);
+        params.put("maxFrame", maxFrame);
+        return attributes;
     }
 
     @GetMapping({"/ochki","/ochki/**"})
@@ -110,71 +119,23 @@ public class MainController {
         log.warn("ТЕСТОВОЕ СООБЩЕНИЕ");
 //        systemPropertiesService.fillSystemProperties();//убрать это отсюда.возможно сделать постконструкт, проверять при добавлении товаров
         Page<Product> products;
-        Set<Integer> attributesIds = null;
-        Integer minPrice=null;
-        Integer maxPrice=null;
-        Integer maxFrame=null;
-        Integer minFrame=null;
         Product filterProduct = new Product();
-        String[] codes = splitUrl(request, "/ochki");
-        if(codes!=null&&codes.length>0){
-           ArrayList<String> paramList =new ArrayList<>(Arrays.asList(codes));
-            ListIterator<String> paramIterator= paramList.listIterator();
-            if(StringUtils.isEmpty( paramIterator.next())) {
-                paramIterator.remove();
-        }
-
-
-            if (paramIterator.hasNext()) {
-                if ("price".equals(paramIterator.next())) {
-                    paramIterator.remove();
-                    if (paramIterator.hasNext()) {
-                        String[] split = paramIterator.next().split("-");
-                        paramIterator.remove();
-                        if (split.length == 2) {
-                            minPrice = Integer.valueOf(split[0]);
-                            maxPrice = Integer.valueOf(split[1]);
-                        }
-                    }
-                } else {
-                    paramIterator.previous();
-                }
-            }
-
-            if (paramIterator.hasNext()) {
-                if ("razmer_ramki".equals(paramIterator.next())) {
-                    paramIterator.remove();
-                    if (paramIterator.hasNext()) {
-                        String[] split = paramIterator.next().split("-");
-                        paramIterator.remove();
-                        if (split.length == 2) {
-                            minFrame = Integer.parseInt(split[0]);
-                            maxFrame = Integer.parseInt(split[1]);
-                        }
-                    }
-                } else {
-                    paramIterator.previous();
-                }
-            }
-
-
-                //тут надо доделать
-
-       attributesIds = getAttributesIds(paramIterator);
-        }
+        Map<String,Integer> params=new HashMap<>();
+        Set<AttributeEnum>  attributes =fillParams(request, "/ochki", params);
+        Set<Integer> attributesIds = attributes==null?null:attributes.stream().map(AttributeEnum::getId).collect(Collectors.toSet());
+//        attributesIds=attributes.size()>0?attributesIds:null;
+        Set<Integer> groupIds = attributes==null?null:attributes.stream().map(AttributeEnum::getGroupId).collect(Collectors.toSet());
+//        groupIds=groupIds.size()>0?groupIds:null;
         Sort sortedBy = Sort.unsorted();
-//        String sort="";
-//        String order="";
         if(!StringUtils.isEmpty(sort)) {
-
             sortedBy = "DESC".equals(order) ? Sort.by(sort).descending() : Sort.by(sort).ascending();
         }
         Pageable pageable = PageRequest.of(page-1, productsOnPage, sortedBy);
-        products = productRepo.findByAttributes(attributesIds, minPrice, maxPrice, minFrame, maxFrame, pageable);
+        products = productRepo.findByAttributes(attributesIds, groupIds, params.get("minPrice"), params.get("maxPrice"), params.get("minFrame"), params.get("maxFrame"), pageable);
 
-        if (attributesIds!=null &&attributesIds.size()>0) {
-            Set<Attribute> attributes = attributesIds.stream().map(s -> new Attribute(filterProduct, s)).collect(Collectors.toSet());
-            filterProduct.setAttributes(attributes);
+        if (attributes!=null &&attributes.size()>0) {
+            Set<Attribute> attributesDb = attributes.stream().map(s -> new Attribute(filterProduct, s)).collect(Collectors.toSet());
+            filterProduct.setAttributes(attributesDb);
         }
 
         ArrayList<ProductProxy> productProxys= new ArrayList();
@@ -198,10 +159,10 @@ public class MainController {
         model.addAttribute("filterMinPrice", systemPropertiesConfig.getMinPrice());
         model.addAttribute("filterMaxFrame", systemPropertiesConfig.getMaxFrame());
         model.addAttribute("filterMinFrame", systemPropertiesConfig.getMinFrame());
-        model.addAttribute("setFilterMaxPrice", maxPrice==null?systemPropertiesConfig.getMaxPrice():maxPrice);
-        model.addAttribute("setFilterMinPrice", minPrice==null?systemPropertiesConfig.getMinPrice():minPrice);
-        model.addAttribute("setFilterMaxFrame", maxFrame==null?systemPropertiesConfig.getMaxFrame():maxFrame);
-        model.addAttribute("setFilterMinFrame", minFrame==null?systemPropertiesConfig.getMinFrame():minFrame);
+        model.addAttribute("setFilterMaxPrice", params.get("maxPrice")==null?systemPropertiesConfig.getMaxPrice():params.get("maxPrice"));
+        model.addAttribute("setFilterMinPrice", params.get("minPrice")==null?systemPropertiesConfig.getMinPrice():params.get("minPrice"));
+        model.addAttribute("setFilterMaxFrame", params.get("maxFrame")==null?systemPropertiesConfig.getMaxFrame():params.get("maxFrame"));
+        model.addAttribute("setFilterMinFrame", params.get("minFrame")==null?systemPropertiesConfig.getMinFrame():params.get("minFrame"));
 
 
         return "main";
@@ -215,14 +176,14 @@ public class MainController {
         }
         return substring.split("/");
     }
-    private Set<Integer> getAttributesIds(ListIterator<String> codes){
+    private Set<AttributeEnum> getAttributes(ListIterator<String> codes){
 
-        Set<Integer> result = new HashSet<>();
+        Set<AttributeEnum> result = new HashSet<>();
             while (codes.hasNext()) {
                 String code =codes.next();
                     AttributeEnum attributeEnumByCode = AttributeEnum.findByCode(code);
                     if(attributeEnumByCode!=null) {
-                        result.add(attributeEnumByCode.getId());
+                        result.add(attributeEnumByCode);
                     }
             }
             if(result.size()==0){

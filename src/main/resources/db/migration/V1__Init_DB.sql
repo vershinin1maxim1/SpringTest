@@ -29,7 +29,8 @@ create table usr (
 create table attribute (
     id int8 not null,
     product_id int8 not null,
-    attribute_id int4 not null
+    attribute_id int4 not null,
+    group_id int4 not null
 );
 
 alter table if exists user_role

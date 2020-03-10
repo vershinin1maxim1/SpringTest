@@ -1,6 +1,7 @@
 package com.example.sweater.service;
 
 import com.example.sweater.domain.product.*;
+import com.example.sweater.repos.AttributeRepo;
 import com.example.sweater.repos.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,8 @@ public class ProductService {
     private String uploadPath;
     @Autowired
     private ProductRepo productRepo;
+    @Autowired
+    private AttributeRepo attributeRepo;
 
 
     public void saveProduct(Product product, String name, String description, MultipartFile file, Map<String, String> form) throws IOException {
@@ -43,13 +46,25 @@ public class ProductService {
         if(product.getAttributes()==null){
             product.setAttributes(new HashSet<Attribute>());
         }
-        product.getAttributes().clear();
-
+//        product.getAttributes().clear();
+        //сделать удаление из таблы
+        Set<Attribute> oldAttributes = new HashSet<>(product.getAttributes());
+        Set<Attribute> newAttributes = new HashSet<>();
         for (String key : form.keySet()) {
             if (attributes.contains(key)) {
-                product.getAttributes().add(new Attribute(product, AttributeEnum.findByCode(key).getId()));
+                Attribute attr = new Attribute(product, AttributeEnum.findByCode(key));
+//                if(oldAttributes.contains(attr)) {
+//                    newAttributes.add(oldAttributes.);
+//                }else{
+                    newAttributes.add(attr);
+//                }
+
             }
         }
+        product.getAttributes().addAll(newAttributes);
+        product.getAttributes().retainAll(newAttributes);
+        oldAttributes.removeAll(newAttributes);
+        attributeRepo.deleteAll(oldAttributes);
         productRepo.save(product);
     }
 
@@ -65,7 +80,6 @@ public class ProductService {
             String resultFilename = uuidFile + "." + file.getOriginalFilename();
 
             file.transferTo(new File(uploadPath + "/" + resultFilename));
-
             product.setFilename(resultFilename);
         }
     }
