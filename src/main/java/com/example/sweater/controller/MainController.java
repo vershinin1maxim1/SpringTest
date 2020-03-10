@@ -1,5 +1,6 @@
 package com.example.sweater.controller;
 
+import com.example.sweater.domain.ProductDAO;
 import com.example.sweater.domain.SystemPropertiesConfig;
 import com.example.sweater.domain.dto.ProductProxyFilterDto;
 import com.example.sweater.domain.product.*;
@@ -34,6 +35,8 @@ public class MainController {
     private SystemPropertiesConfig systemPropertiesConfig;
     @Autowired
     private SystemPropertiesService systemPropertiesService;
+    @Autowired
+    private ProductDAO productDAO;
 
 
     @GetMapping("/")
@@ -131,8 +134,12 @@ public class MainController {
             sortedBy = "DESC".equals(order) ? Sort.by(sort).descending() : Sort.by(sort).ascending();
         }
         Pageable pageable = PageRequest.of(page-1, productsOnPage, sortedBy);
-        products = productRepo.findByAttributes(attributesIds, groupIds, params.get("minPrice"), params.get("maxPrice"), params.get("minFrame"), params.get("maxFrame"), pageable);
-
+//        products = productRepo.findByAttributes(attributesIds, groupIds, params.get("minPrice"), params.get("maxPrice"), params.get("minFrame"), params.get("maxFrame"), pageable);
+        Collection<List<Integer>>  attributeIds = groupAttributesByGroupId(attributes);
+//        ArrayList<Integer> integers = new ArrayList<>();
+//        integers.add(0);
+//        attributeIds.add(integers);
+        products = productDAO.getPageByParams(attributeIds, pageable);
         if (attributes!=null &&attributes.size()>0) {
             Set<Attribute> attributesDb = attributes.stream().map(s -> new Attribute(filterProduct, s)).collect(Collectors.toSet());
             filterProduct.setAttributes(attributesDb);
@@ -166,6 +173,20 @@ public class MainController {
 
 
         return "main";
+    }
+
+    private Collection<List<Integer>>  groupAttributesByGroupId(Set<AttributeEnum> attributes) {
+        Map<Integer, List<Integer>> mapGroupId = new HashMap<>();
+        for (AttributeEnum attribute : attributes) {
+            Integer groupId = attribute.getGroupId();
+            List<Integer> attrValues = new ArrayList<>();
+            if(mapGroupId.containsKey(groupId)){
+                attrValues = mapGroupId.get(groupId);
+            }
+            attrValues.add(attribute.getId());
+            mapGroupId.put(groupId, attrValues);
+        }
+        return mapGroupId.values();
     }
 
     private String[] splitUrl(HttpServletRequest request, String startFrom){
