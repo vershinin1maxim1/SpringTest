@@ -25,7 +25,7 @@ $(document).ready(function () {
         max: maxFrame,
         values: [${setFilterMinFrame?c}, ${setFilterMaxFrame?c}],
         slide: function (event, ui) {
-            $("#frameFilter").text(ui.values[0] + " - " + ui.values[1] + " Р");
+            $("#frameFilter").text(ui.values[0] + " - " + ui.values[1]);
         }
     });
     $("#frameFilter").text($("#frameSlider").slider("values", 0) + " - " + $("#frameSlider").slider("values", 1));
