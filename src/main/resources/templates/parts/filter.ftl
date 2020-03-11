@@ -14,11 +14,32 @@ $(document).ready(function () {
         max: maxPrice,
         values: [${setFilterMinPrice?c}, ${setFilterMaxPrice?c}],
         slide: function (event, ui) {
-            $("#priceFilter").text(ui.values[0] + " - " + ui.values[1] + " Р");
+            // $("#priceFilter").text(ui.values[0] + " - " + ui.values[1] + " Р");
+            // fillPriceInputs();
+            $("#minPriceValue").val(ui.values[0]);
+            $("#maxPriceValue").val(ui.values[1]);
         }
     });
-    $("#priceFilter").text($("#priceSlider").slider("values", 0) + " - " + $("#priceSlider").slider("values", 1)+ " Р");
+    // function fillPriceInputs(){
+    //    $("#minPriceValue").val()
+    // }
+    $("#minPriceValue").change(function(){
+        var val = $("#minPriceValue").val();
+        if(val>=minPrice&&(val<=$("#priceSlider").slider('values',1))) {
+            $("#priceSlider").slider('values', 0, val);
+        }
+    });
 
+    $("#maxPriceValue").change(function(){
+        var val = $("#maxPriceValue").val();
+        if(val<=maxPrice&&(val>=$("#priceSlider").slider('values',0))) {
+            $("#priceSlider").slider('values', 1, val);
+        }
+    });
+
+    // $("#maxPriceValue").trigger("change");
+    // $("#minPriceValue").trigger("change");
+    // $("#priceFilter").text($("#priceSlider").slider("values", 0) + " - " + $("#priceSlider").slider("values", 1)+ " Р");
     $( "#frameSlider" ).slider({
         range: true,
         min: minFrame,
@@ -37,7 +58,6 @@ $(document).ready(function () {
     function fillFilterParams(){
         $.ajax({url: '/ochkiGetActualFilter'+makeSearchFunction(), type: 'GET', contentType: "application/json",
             success:function(result) {
-
              updateBadges(result);
             }});
     }
@@ -63,7 +83,6 @@ function updateBadges(result){
 
 function getCountByAttrIdAndFilterProxy(attributeId, result){
     for (var i = 0; i < result.length; i++) {
-        debugger;
         if (result[i]["attributeId"] == attributeId) {
             return result[i]["count"];
         }
@@ -100,13 +119,20 @@ function makeSearchFunction(){
                 <div class="form-row">
 <#--                    <div class="form-group col-sd-12">-->
                         <form id="filterForm" method="get" action="/ochki" class="form-inline">
-                            <div class="col-xs-12">
-                                <input type="text" name="name" class="form-control" value="${filter?ifExists}" placeholder="Поиск по имени">
-                            </div>
-                            <div class="container-fluid col-xs-12">
+                            <div class=" col-xs-12">
                                 <label for="priceFilter">Цена:</label>
                                 <label id="priceFilter"></label>
+                                <div class="row" >
+                                    <div style="text-align: center" >
+                                    <input name="minPriceValue" value=" ${setFilterMinPrice}" type="text"   size="3" id="minPriceValue">
+                                        -
+                                 <input name="maxPriceValue" value="${setFilterMaxPrice}" type="text"  size="3" id="maxPriceValue">
+                                        Р
+                                    </div>
+                                </div>
+                                <div class=" col-xs-12">
                                 <div id="priceSlider"></div>
+                            </div>
                             </div>
                             <div class="container-fluid col-xs-12">
                                 <label for="frameFilter">Размер рамки:</label>

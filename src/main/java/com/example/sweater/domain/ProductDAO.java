@@ -35,6 +35,7 @@ public class ProductDAO {
         CriteriaQuery<Product> query =entityManager.getCriteriaBuilder().createQuery(Product.class);
         Root<Product> selection = query.from(Product.class);
         query.select(selection);
+        query.distinct(true);
         Predicate wherePredicate = makeWhere(selection, query, attributeIds, minPrice, maxPrice,  minFrame, maxFrame);
         query.where(wherePredicate);
         if(!StringUtils.isEmpty(sort)) {
@@ -51,6 +52,7 @@ public class ProductDAO {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Product> selection = query.from(Product.class);
+        query.distinct(true);
         query.select(criteriaBuilder.count(selection));
         Predicate wherePredicate = makeWhere(selection, query, attributeIds, minPrice, maxPrice,  minFrame, maxFrame);
         query.where(wherePredicate);
@@ -63,7 +65,7 @@ public class ProductDAO {
         Root<Product> selection = query.from(Product.class);
         SetJoin<Product, Attribute> attributesJoin = selection.join(Product_.attributes, JoinType.LEFT);
 //        a.attributeId as attributeId,  count(p) as count
-        query.select(criteriaBuilder.construct(ProductProxyFilterDto.class,attributesJoin.get(Attribute_.attributeId), criteriaBuilder.count(selection.get(Product_.id)).alias("count")));
+        query.select(criteriaBuilder.construct(ProductProxyFilterDto.class,attributesJoin.get(Attribute_.attributeId), criteriaBuilder.countDistinct(selection.get(Product_.id)).alias("count")));
         Predicate wherePredicate = makeWhere(selection, query, attributeIds, minPrice, maxPrice,  minFrame, maxFrame);
         query.where(wherePredicate);
         query.groupBy(attributesJoin.get(Attribute_.attributeId));
@@ -73,7 +75,6 @@ public class ProductDAO {
     private Predicate makeWhere(Root<Product> selection, CriteriaQuery query, Collection<List<Integer>> attributeIds, Integer minPrice, Integer maxPrice,  Integer minFrame, Integer maxFrame){
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         List<Predicate> allPredicates = new ArrayList<>();
-        List<Predicate> orAttributePredicates = new ArrayList<>();
         if (attributeIds!=null&&attributeIds.size()>0) {
             for(List<Integer> attributeId:attributeIds) {
                 SetJoin<Product, Attribute> attributesJoin = selection.join(Product_.attributes);

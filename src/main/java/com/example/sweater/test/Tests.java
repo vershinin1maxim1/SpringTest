@@ -26,8 +26,9 @@ public class Tests {
 
     public void createProduct(int i){
         Product product = new Product();
-        product.setName("Товар "+i);
-        product.setDescription("Описание товара "+i);
+        product.setName("Наименование товара"+i);
+        product.setDescription("Описание товара Описание товара Описание товара Описание товара Описание товара Описание товара Описание товара " +
+                "Описание товара Описание товара Описание товара Описание товара Описание товара Описание товара Описание товара "+i);
         product.setPrice(1000+i);
         product.setFrame(200+i);
         productRepo.save(product);
