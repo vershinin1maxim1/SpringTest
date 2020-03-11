@@ -17,7 +17,7 @@
                 </li>
             <#if isAdmin>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user-products/edit">Редактирование товаров</a>
+                    <a class="nav-link" href="/admin-products/edit">Редактирование товаров</a>
                 </li>
             </#if>
         </ul>

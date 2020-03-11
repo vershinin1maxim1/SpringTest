@@ -26,7 +26,7 @@
             </div>
             <#if isAdmin>
             <div class="card-footer text-muted">
-                    <a class="btn btn-primary" href="/user-products/edit?product=${product.id}">
+                    <a class="btn btn-primary" href="/admin-products/edit?product=${product.id}">
                         Изменить
                     </a>
             </div>

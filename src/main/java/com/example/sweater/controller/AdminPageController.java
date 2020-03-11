@@ -23,8 +23,8 @@ public class AdminPageController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/user-products/edit")
-    public String userProducts(
+    @GetMapping("/admin-products/edit")
+    public String adminProducts(
             @AuthenticationPrincipal User currentUser,
             Model model,
             @RequestParam(required = false) Product product
@@ -34,11 +34,11 @@ public class AdminPageController {
         model.addAttribute("product", product==null?null:new ProductProxy(product));
         model.addAttribute("colors", Color.values());
         model.addAttribute("genders", Gender.values());
-        return "userProducts";
+        return "adminProducts";
     }
 
 
-    @PostMapping("/user-products/edit")
+    @PostMapping("/admin-products/edit")
     public String updateProduct(
             @AuthenticationPrincipal User currentUser,
             @RequestParam("id") Product product,
@@ -49,6 +49,6 @@ public class AdminPageController {
     ) throws IOException {
 //        systemPropertiesService.fillSystemProperties();//убрать это отсюда.возможно сделать постконструкт, проверять при добавлении товаров
         productService.saveProduct(product, name, description, file, form);
-        return "redirect:/user-products/edit";
+        return "redirect:/admin-products/edit";
     }
 }
