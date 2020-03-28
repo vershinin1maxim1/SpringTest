@@ -110,7 +110,7 @@ function makeSearchFunction(){
     return result;
 }
 </script>
-<div class="col-sm-3">
+<div class="col-sm-4 col-md-3">
     <div class="card bg-light">
         <div class="card-header">Параметры</div>
         <div class="card-body">

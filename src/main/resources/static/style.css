@@ -26,3 +26,24 @@ body {
     background-color: #999999;
     border-radius: 10px;
 }
+
+@media (min-width: 576px) {
+    .card-columns {
+        -webkit-column-count: 2;
+        column-count: 2
+    }
+}
+/* 3 колонки на md */
+@media (min-width: 768px) {
+    .card-columns {
+        -webkit-column-count: 3;
+        column-count: 3
+    }
+}
+/* 4 колонки на lg и xl */
+@media (min-width: 992px) {
+    .card-columns {
+        -webkit-column-count: 4;
+        column-count: 4
+    }
+}
