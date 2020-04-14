@@ -111,41 +111,43 @@ function makeSearchFunction(){
 }
 </script>
 <div class="col-sm-4 col-md-3">
-    <div class="card bg-light">
+    <div class="card">
         <div class="card-header">Параметры</div>
-        <div class="card-body">
-<#--            <h5 class="card-title">Light card title</h5>-->
-<#--            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-                <div class="form-row">
-<#--                    <div class="form-group col-sd-12">-->
-                        <form id="filterForm" method="get" action="/ochki" class="form-inline">
-                            <div class=" col-xs-12">
-                                <label for="priceFilter">Цена:</label>
-                                <label id="priceFilter"></label>
-                                <div class="row" >
-                                    <div style="text-align: center" >
-                                    <input name="minPriceValue" value=" ${setFilterMinPrice}" type="text"   size="3" id="minPriceValue">
-                                        -
-                                 <input name="maxPriceValue" value="${setFilterMaxPrice}" type="text"  size="3" id="maxPriceValue">
-                                        Р
-                                    </div>
-                                </div>
-                                <div class=" col-xs-12">
-                                <div id="priceSlider"></div>
-                            </div>
-                            </div>
-                            <div class="container-fluid col-xs-12">
-                                <label for="frameFilter">Размер рамки:</label>
-                                <label id="frameFilter"></label>
-                                <div id="frameSlider"></div>
-                            </div>
-                            <@colorPage.colorPage filterProduct/>
-                            <@genderPage.genderPage filterProduct/>
-                            <a id="searchButton" class="btn btn-primary ml-2">Поиск</a>
-                        </form>
-<#--                    </div>-->
-                </div>
-
-        </div>
+        <form id="filterForm" method="get" action="/ochki">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <label for="priceFilter">Цена, Р:</label>
+                    <label id="priceFilter"></label>
+                    <div class="row">
+                        <div style="text-align: center">
+                            <input name="minPriceValue" value=" ${setFilterMinPrice}" type="text" size="3"
+                                   id="minPriceValue">
+                            -
+                            <input name="maxPriceValue" value="${setFilterMaxPrice}" type="text" size="3"
+                                   id="maxPriceValue">
+                        </div>
+                    </div>
+                    <div class="">
+                        <div id="priceSlider"></div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <label for="frameFilter">Размер рамки:</label>
+                    <label id="frameFilter"></label>
+                    <div id="frameSlider"></div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <@colorPage.colorPage filterProduct/>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <@genderPage.genderPage filterProduct/>
+                </li>
+                <li class="list-group-item">
+                    <a id="searchButton" class="btn btn-primary ml-2">Поиск</a>
+                </li>
+            </ul>
+        </form>
     </div>
 </div>

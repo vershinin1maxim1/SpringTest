@@ -13,7 +13,16 @@ import java.util.Set;
 public enum Color {
     BLACK(0, "chernyj", "Чёрный"),
     WHITE(1, "belyj", "Белый"),
-    RED(2, "krasnyj", "Красный");
+    RED(2, "krasnyj", "Красный"),
+    BLUE(3, "sinij", "Синий"),
+    BROWN(4, "korichnevyj", "Коричневый"),
+    PINK(5, "rozovyj", "Розовый"),
+    SILVER(6, "serebryanyj", "Серебряный"),
+    GREY(7, "seryj", "Серый"),
+    GREEN(8, "zelyonyj", "Зелёный"),
+    GOLD(9, "zolotoj", "Золотой"),
+    PURPLE(10, "fioletovyj", "Фиолетовый"),
+    BEIGE(11, "bezhevyj", "Бежевый");
 
     private final Integer id;
     private final String code;

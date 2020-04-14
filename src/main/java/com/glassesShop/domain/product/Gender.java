@@ -8,8 +8,10 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public enum Gender {
-    MEN(3,"muzhskoj", "Мужской"),
-    WOMEN(4,"zhenskij", "Женский");
+    MEN(12,"muzhskie", "Мужские"),
+    WOMEN(13,"zhenskie", "Женские"),
+    UNISEX(14,"uniseks", "Унисекс"),
+    CHILDREN(15,"detskie", "Детские");
 
 
     private final Integer id;

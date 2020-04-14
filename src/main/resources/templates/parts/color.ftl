@@ -1,8 +1,8 @@
 <#macro colorPage currentProduct=''>
     <#list colors as color>
-        <div>
-            <label><input type="checkbox" class="searchFilterElement" id="${color}" name="${color.code}" <#if currentProduct!='' && currentProduct?? && currentProduct.colors??>${currentProduct.colors?seq_contains(color)?string("checked", "")}</#if>>${color}</label>
-            <small class="badge" attributeId="${color.id}"></small>
-        </div>
+            <div class="checkbox-color">
+                <input type="checkbox" id="${color}" name="${color.code}"  class="searchFilterElement checkbox-color-input" <#if currentProduct!='' && currentProduct?? && currentProduct.colors??>${currentProduct.colors?seq_contains(color)?string("checked", "")}</#if>>
+                <label for="${color}" class="checkbox-color-label checkbox-color-label-${color}"></label>
+            </div>
     </#list>
 </#macro>

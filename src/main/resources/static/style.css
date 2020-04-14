@@ -47,3 +47,111 @@ body {
         column-count: 4
     }
 }
+
+/* чекбокс цвета начало */
+
+.checkbox-color{
+    position: relative;
+    width:38px;
+    height:38px;
+    /*margin: 20px;*/
+    /*margin-bottom: 40px;*/
+    /*margin-left: 40px;*/
+    /*margin-right: 40px;*/
+}
+.checkbox-color-input{
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+}
+.checkbox-color-label{
+  /*padding-left: 25px;*/
+  /*padding-top: 25px;*/
+    cursor:pointer;
+}
+.checkbox-color-label:before{
+   content: "";
+    display: block;
+    width: 36px;
+    height: 36px;
+
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+z-index: 1;
+    transition: border .1s linear;
+}
+
+.checkbox-color-label:after{
+    content: "";
+    display: block;
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+    position: absolute;
+    top:3px;
+    left:3px;
+    z-index: 2;
+    transition: background .1s linear;
+}
+
+.checkbox-color-input:checked + .checkbox-color-label:before{
+    border-width: 2px;
+    border-style: solid;
+    border-color: #007bff;
+}
+
+.checkbox-color-input:checked + .checkbox-color-label:after{
+    opacity:1;
+}
+
+.checkbox-color-label-GREEN:after{
+    background-color: #49d120;
+}
+
+.checkbox-color-label-BLUE:after{
+    background-color: #007bff;
+}
+
+.checkbox-color-label-BLACK:after{
+    background-color: #000000;
+}
+.checkbox-color-label-WHITE:after{
+    background-color: #ffffff;
+}
+.checkbox-color-label-RED:after{
+    background-color: #FF0000;
+}
+.checkbox-color-label-BROWN:after{
+    background-color: #A52A2A;
+}
+.checkbox-color-label-PINK:after{
+    background-color: #FFC0CB;
+}
+.checkbox-color-label-SILVER:after{
+    background-color: #C0C0C0;
+}
+.checkbox-color-label-GREY:after{
+    background-color: #808080;
+}
+.checkbox-color-label-GOLD:after{
+    background-color: #FFD700;
+}
+
+.checkbox-color-label-PURPLE:after{
+    background-color: #800080;
+}
+
+.checkbox-color-label-BEIGE:after{
+    background-color: #F5F5DC;
+}
+
+.checkbox-color-label-WHITE:after{
+    background-color: #ffffff;
+}
+
+/* чекбокс цвета конец */
