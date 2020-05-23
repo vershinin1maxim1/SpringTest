@@ -115,23 +115,21 @@ function makeSearchFunction(){
         <div class="card-header">Параметры</div>
         <form id="filterForm" method="get" action="/ochki">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">
+                <li class="list-group-item" style="text-align: center">
                     <label for="priceFilter">Цена, Р:</label>
                     <label id="priceFilter"></label>
-                    <div class="row">
-                        <div style="text-align: center">
-                            <input name="minPriceValue" value=" ${setFilterMinPrice}" type="text" size="3"
-                                   id="minPriceValue">
-                            -
-                            <input name="maxPriceValue" value="${setFilterMaxPrice}" type="text" size="3"
-                                   id="maxPriceValue">
-                        </div>
+                    <div style="margin-bottom: 5px;">
+                        <input name="minPriceValue" value=" ${setFilterMinPrice}" type="text" size="3"
+                               id="minPriceValue">
+                        -
+                        <input name="maxPriceValue" value="${setFilterMaxPrice}" type="text" size="3"
+                               id="maxPriceValue">
                     </div>
                     <div class="">
                         <div id="priceSlider"></div>
                     </div>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item"  style="text-align: center">
                     <label for="frameFilter">Размер рамки:</label>
                     <label id="frameFilter"></label>
                     <div id="frameSlider"></div>
@@ -144,7 +142,7 @@ function makeSearchFunction(){
                 <li class="list-group-item">
                     <@genderPage.genderPage filterProduct/>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item" style="text-align: center">
                     <a id="searchButton" class="btn btn-primary ml-2">Поиск</a>
                 </li>
             </ul>

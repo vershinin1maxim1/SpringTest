@@ -26,5 +26,5 @@ public enum Color {
 
     private final Integer id;
     private final String code;
-    private final String name;
+    private final String rusName;//просто name вызовет ошибку в ftl
 }
