@@ -1,5 +1,6 @@
 <#import "color.ftl" as colorPage>
 <#import "gender.ftl" as genderPage>
+<#import "frameForm.ftl" as frameFormPage>
 <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
     Создание товара
 </a>
@@ -30,8 +31,23 @@
                     <label class="custom-file-label" for="customFile">Выберите изображение товара</label>
                 </div>
             </div>
-            <@colorPage.colorPage product/>
-            <@genderPage.genderPage product/>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="row">
+                        <@colorPage.colorPage product/>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <@genderPage.genderPage product/>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <@frameFormPage.frameFormPage product/>
+                    </div>
+                </li>
+            </ul>
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
             <input type="hidden" name="id" value="<#if product??>${product.id}</#if>" />
             <div class="form-group">

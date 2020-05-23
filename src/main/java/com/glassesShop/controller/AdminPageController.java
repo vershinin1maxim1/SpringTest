@@ -1,12 +1,9 @@
 package com.glassesShop.controller;
 
 import com.glassesShop.domain.User;
-import com.glassesShop.domain.product.ProductProxy;
+import com.glassesShop.domain.product.*;
 import com.glassesShop.service.ProductService;
 import com.glassesShop.service.SystemPropertiesService;
-import com.glassesShop.domain.product.Color;
-import com.glassesShop.domain.product.Gender;
-import com.glassesShop.domain.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -37,6 +34,7 @@ public class AdminPageController {
         model.addAttribute("product", product==null?null:new ProductProxy(product));
         model.addAttribute("colors", Color.values());
         model.addAttribute("genders", Gender.values());
+        model.addAttribute("frameForms", FrameForm.values());
         return "adminProducts";
     }
 

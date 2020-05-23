@@ -1,5 +1,6 @@
 <#import "color.ftl" as colorPage>
 <#import "gender.ftl" as genderPage>
+<#import "frameForm.ftl" as frameFormPage>
 
 <script type="text/javascript" charset="utf-8">
 var minPrice=${filterMinPrice?c};
@@ -141,6 +142,9 @@ function makeSearchFunction(){
                 </li>
                 <li class="list-group-item">
                     <@genderPage.genderPage filterProduct/>
+                </li>
+                <li class="list-group-item">
+                    <@frameFormPage.frameFormPage filterProduct/>
                 </li>
                 <li class="list-group-item" style="text-align: center">
                     <a id="searchButton" class="btn btn-primary ml-2">Поиск</a>
