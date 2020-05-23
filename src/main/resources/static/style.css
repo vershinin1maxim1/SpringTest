@@ -162,3 +162,22 @@ z-index: 1;
 .cursor-pointer{
     cursor: pointer;
 }
+
+/* стрелочка свертывающегося элемента начало */
+.filterCollapse {
+    position: relative;
+}
+
+.filterCollapse::after {
+    content: "\f107";
+    color: #333;
+    top: -2px;
+    right: 0px;
+    position: absolute;
+    font-family: "FontAwesome"
+}
+
+.filterCollapse[aria-expanded="true"]::after {
+    content: "\f106";
+}
+/* стрелочка свертывающегося элемента конец */
