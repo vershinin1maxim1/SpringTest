@@ -35,6 +35,7 @@ public class AdminPageController {
         model.addAttribute("colors", Color.values());
         model.addAttribute("genders", Gender.values());
         model.addAttribute("frameForms", FrameForm.values());
+        model.addAttribute("brands", Brand.values());
         return "adminProducts";
     }
 

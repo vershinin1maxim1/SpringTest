@@ -139,6 +139,7 @@ public class MainController {
         model.addAttribute("colors", Color.values());
         model.addAttribute("genders", Gender.values());
         model.addAttribute("frameForms", FrameForm.values());
+        model.addAttribute("brands", Brand.values());
         int currentPage = products.getNumber() + 1;
         int totalPages = products.getTotalPages();
         model.addAttribute("currentPage", currentPage);

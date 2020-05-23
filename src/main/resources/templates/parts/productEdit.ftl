@@ -1,6 +1,7 @@
 <#import "color.ftl" as colorPage>
 <#import "gender.ftl" as genderPage>
 <#import "frameForm.ftl" as frameFormPage>
+<#import "brand.ftl" as brandPage>
 <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
     Создание товара
 </a>
@@ -45,6 +46,11 @@
                 <li class="list-group-item">
                     <div class="row">
                         <@frameFormPage.frameFormPage product/>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <@brandPage.brandPage product/>
                     </div>
                 </li>
             </ul>

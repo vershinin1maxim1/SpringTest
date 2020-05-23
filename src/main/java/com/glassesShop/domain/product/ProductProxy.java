@@ -19,6 +19,7 @@ public class ProductProxy {
     private Set<Color> colors = new HashSet<>();
     private Set<Gender> genders = new HashSet<>();
     private Set<FrameForm> frameForms = new HashSet<>();
+    private Set<Brand> brands = new HashSet<>();
 
 
     public ProductProxy(Product product) {
@@ -42,6 +43,9 @@ public class ProductProxy {
                     }
                     if (type.equals(FrameForm.class)) {
                         this.frameForms.add(FrameForm.valueOf(attrEnum.toString()));
+                    }
+                    if (type.equals(Brand.class)) {
+                        this.brands.add(Brand.valueOf(attrEnum.toString()));
                     }
                 }
             }
