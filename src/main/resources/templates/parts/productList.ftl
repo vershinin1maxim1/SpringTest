@@ -28,11 +28,16 @@
                 </div>
                 <#if isAdmin>
                 <div class="card-footer text-muted">
-                        <a class="btn btn-primary" href="/admin-products/edit?product=${product.id}">
-                            Изменить
-                        </a>
+                    <a class="btn btn-primary" href="/admin-products/edit?product=${product.id}">
+                        Изменить
+                    </a>
                 </div>
                 </#if>
+                <div class="card-footer text-muted">
+                    <a class="btn btn-primary"  data-toggle="modal" data-target="#myModal">
+                        добавить в корзину
+                    </a>
+                </div>
             </div>
         <#else>
             Нет товаров
@@ -71,4 +76,24 @@
             </nav>
         </div>
     </#if>
+</div>
+
+<!-- Модальное окно -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                todo Добавить информацию о  покупаемом товаре
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Продолжить покупки</button>
+                <a class="btn btn-primary" href="/korzina">Оформить заказ</a>
+            </div>
+        </div>
+    </div>
 </div>

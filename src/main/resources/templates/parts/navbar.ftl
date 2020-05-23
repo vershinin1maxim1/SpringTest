@@ -12,9 +12,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="/">Главная страница</a>
             </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/ochki">Товары</a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ochki">Товары</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/korzina">Корзина</a>
+            </li>
             <#if isAdmin>
                 <li class="nav-item">
                     <a class="nav-link" href="/admin-products/edit">Редактирование товаров</a>
