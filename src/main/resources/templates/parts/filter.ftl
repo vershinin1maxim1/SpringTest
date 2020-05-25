@@ -1,5 +1,6 @@
 <#import "color.ftl" as colorPage>
 <#import "gender.ftl" as genderPage>
+<#import "material.ftl" as materialPage>
 <#import "frameForm.ftl" as frameFormPage>
 <#import "brand.ftl" as brandPage>
 
@@ -143,6 +144,9 @@ function makeSearchFunction(){
                 </li>
                 <li class="list-group-item">
                     <@genderPage.genderPage filterProduct/>
+                </li>
+                <li class="list-group-item">
+                    <@materialPage.materialPage filterProduct/>
                 </li>
                 <li class="list-group-item">
                     <@frameFormPage.frameFormPage filterProduct/>

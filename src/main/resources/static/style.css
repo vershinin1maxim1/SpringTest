@@ -180,4 +180,8 @@ z-index: 1;
 .filterCollapse[aria-expanded="true"]::after {
     content: "\f106";
 }
+
+.filterCollapse[aria-expanded="true"] {
+    text: "\f106";
+}
 /* стрелочка свертывающегося элемента конец */

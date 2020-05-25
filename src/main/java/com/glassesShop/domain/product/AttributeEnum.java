@@ -20,10 +20,12 @@ public enum AttributeEnum {
     GOLD(Color.GOLD.getId(), Color.GOLD.getCode(), Color.class, 0),
     PURPLE(Color.PURPLE.getId(), Color.PURPLE.getCode(), Color.class, 0),
     BEIGE(Color.BEIGE.getId(), Color.BEIGE.getCode(), Color.class, 0),
+
     MEN(Gender.MEN.getId(), Gender.MEN.getCode(), Gender.class, 1),
     WOMEN(Gender.WOMEN.getId(), Gender.WOMEN.getCode(), Gender.class, 1),
     UNISEX(Gender.UNISEX.getId(), Gender.UNISEX.getCode(), Gender.class, 1),
     CHILDREN(Gender.CHILDREN.getId(), Gender.CHILDREN.getCode(), Gender.class, 1),
+
     BABOCHKA(FrameForm.BABOCHKA.getId(), FrameForm.BABOCHKA.getCode(), FrameForm.class, 2),
     KOSHACHIJ_GLAZ(FrameForm.KOSHACHIJ_GLAZ.getId(), FrameForm.KOSHACHIJ_GLAZ.getCode(), FrameForm.class, 2),
     OVALNAYA(FrameForm.OVALNAYA.getId(), FrameForm.OVALNAYA.getCode(), FrameForm.class, 2),
@@ -90,7 +92,12 @@ public enum AttributeEnum {
     TOMMY_HILFIGER(Brand.TOMMY_HILFIGER.getId(), Brand.TOMMY_HILFIGER.getCode(), Brand.class, 3),
     TWIINS(Brand.TWIINS.getId(), Brand.TWIINS.getCode(), Brand.class, 3),
     UNOFFICIAL(Brand.UNOFFICIAL.getId(), Brand.UNOFFICIAL.getCode(), Brand.class, 3),
-    VOGUE(Brand.VOGUE.getId(), Brand.VOGUE.getCode(), Brand.class, 3);
+    VOGUE(Brand.VOGUE.getId(), Brand.VOGUE.getCode(), Brand.class, 3),
+
+    METALL(Material.METALL.getId(), Material.METALL.getCode(), Material.class, 4),
+    TITAN(Material.TITAN.getId(), Material.TITAN.getCode(), Material.class, 4),
+    PLASTIK(Material.PLASTIK.getId(), Material.PLASTIK.getCode(), Material.class, 4),
+    SBORKA(Material.SBORKA.getId(), Material.SBORKA.getCode(), Material.class, 4);
 
     private final Integer id;
     private final String code;

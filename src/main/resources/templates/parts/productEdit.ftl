@@ -1,5 +1,6 @@
 <#import "color.ftl" as colorPage>
 <#import "gender.ftl" as genderPage>
+<#import "material.ftl" as materialPage>
 <#import "frameForm.ftl" as frameFormPage>
 <#import "brand.ftl" as brandPage>
 <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
@@ -41,6 +42,11 @@
                 <li class="list-group-item">
                     <div class="row">
                         <@genderPage.genderPage product/>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <@materialPage.materialPage product/>
                     </div>
                 </li>
                 <li class="list-group-item">

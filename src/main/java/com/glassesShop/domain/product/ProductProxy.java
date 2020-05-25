@@ -18,6 +18,7 @@ public class ProductProxy {
     private String filename;
     private Set<Color> colors = new HashSet<>();
     private Set<Gender> genders = new HashSet<>();
+    private Set<Material> materials = new HashSet<>();
     private Set<FrameForm> frameForms = new HashSet<>();
     private Set<Brand> brands = new HashSet<>();
 
@@ -40,6 +41,9 @@ public class ProductProxy {
                     }
                     if (type.equals(Gender.class)) {
                         this.genders.add(Gender.valueOf(attrEnum.toString()));
+                    }
+                    if (type.equals(Material.class)) {
+                        this.materials.add(Material.valueOf(attrEnum.toString()));
                     }
                     if (type.equals(FrameForm.class)) {
                         this.frameForms.add(FrameForm.valueOf(attrEnum.toString()));

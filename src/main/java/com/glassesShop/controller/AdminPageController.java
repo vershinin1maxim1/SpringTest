@@ -34,6 +34,7 @@ public class AdminPageController {
         model.addAttribute("product", product==null?null:new ProductProxy(product));
         model.addAttribute("colors", Color.values());
         model.addAttribute("genders", Gender.values());
+        model.addAttribute("materials", Material.values());
         model.addAttribute("frameForms", FrameForm.values());
         model.addAttribute("brands", Brand.values());
         return "adminProducts";
