@@ -29,6 +29,26 @@ public class ProductDAO {
         return page;
     }
 
+    public Product findFirstByVendorAndAttributeId(Long vendor, Integer attributeId) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> query = criteriaBuilder.createQuery(Product.class);
+        Root<Product> selection = query.from(Product.class);
+        query.select(selection);
+        query.distinct(true);
+        List<Predicate> allPredicates = new ArrayList<>();
+        SetJoin<Product, Attribute> attributesJoin = selection.join(Product_.attributes);
+        allPredicates.add(attributesJoin.get(Attribute_.attributeId).in(attributeId));
+        if (vendor != null) {
+            allPredicates.add(criteriaBuilder.greaterThanOrEqualTo(selection.get(Product_.vendor), vendor));
+        }
+        query.where(unionWithAndOperation(allPredicates));
+        List<Product> resultList = entityManager.createQuery(query).getResultList();
+        if (resultList.size() > 0) {
+            return resultList.iterator().next();
+        }
+        return null;
+    }
+
     public List<Product> findByParams(Collection<List<Integer>>  attributeIds, Integer minPrice, Integer maxPrice,  Integer minFrame, Integer maxFrame, Pageable pageable, String sort, boolean desc){
         CriteriaQuery<Product> query =entityManager.getCriteriaBuilder().createQuery(Product.class);
         Root<Product> selection = query.from(Product.class);

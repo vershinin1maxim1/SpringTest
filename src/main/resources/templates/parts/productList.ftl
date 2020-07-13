@@ -18,13 +18,17 @@
         <#list products as product>
             <div class="card">
 <#--            <div class="card" style="width:250px">-->
-                <#if product.filename??>
-                    <img src="/img/${product.filename}" class="card-img-top">
-                </#if>
-                <div class="m-2">
-                    <i>${product.name}</i>
-                    <span>${product.description}</span><br/>
+                <div>
+                    <a href="oprava_<#if product.vendor??&&product.brand??>${product.brand.code}_${product.vendor}</#if>">
+                        <#if product.filename??>
+                            <img src="/img/${product.filename}" class="card-img-top">
+                        </#if>
+                        <div class="m-2">
+                            <i>${product.name}</i>
+        <#--                    <span>${product.description}</span><br/>-->
 
+                        </div>
+                    </a>
                 </div>
                 <#if isAdmin>
                 <div class="card-footer text-muted">

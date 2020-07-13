@@ -18,7 +18,8 @@ public class Tests {
 
     @Test
     public void fillProducts() {
-        for(int i=0;i< 40;i++) {
+        int count=3;
+        for(int i=0;i< count;i++) {
             createProduct(i);
         }
     }
@@ -29,6 +30,7 @@ public class Tests {
         product.setDescription("Описание товара Описание товара Описание товара Описание товара Описание товара Описание товара Описание товара " +
                 "Описание товара Описание товара Описание товара Описание товара Описание товара Описание товара Описание товара "+i);
         product.setPrice(1000+i);
+        product.setVendor((long) (2000 + i));
         product.setFrame(200+i);
         productRepo.save(product);
     }

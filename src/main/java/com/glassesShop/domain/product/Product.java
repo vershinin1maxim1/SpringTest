@@ -24,6 +24,8 @@ public class Product {
     @Length(max = 255, message = "Имя слишком длинное")
     private String name;
 
+    private Long vendor;//артикул производителя
+
     private Integer price;//цена
 
     private Integer frame;//размер рамки

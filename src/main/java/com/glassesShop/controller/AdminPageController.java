@@ -46,12 +46,13 @@ public class AdminPageController {
             @AuthenticationPrincipal User currentUser,
             @RequestParam("id") Product product,
             @RequestParam("name") String name,
+            @RequestParam("vendor") Long vendor,
             @RequestParam("description") String description,
             @RequestParam("file") MultipartFile file,
             @RequestParam Map<String, String> form
     ) throws IOException {
 //        systemPropertiesService.fillSystemProperties();//убрать это отсюда.возможно сделать постконструкт, проверять при добавлении товаров
-        productService.saveProduct(product, name, description, file, form);
+        productService.saveProduct(product, name, description, vendor, file, form);
         return "redirect:/admin-products/edit";
     }
 }

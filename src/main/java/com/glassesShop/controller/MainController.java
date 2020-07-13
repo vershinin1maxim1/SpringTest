@@ -28,6 +28,7 @@ import static java.lang.Math.min;
 @Controller
 public class MainController {
     private static final int productsOnPage = 12;
+
     @Autowired
     private ProductRepo productRepo;
     @Autowired
@@ -116,8 +117,15 @@ public class MainController {
                        @RequestParam(required = false, defaultValue = "1") Integer page,
                        Model model,
                        HttpServletRequest request) {
-        log.warn("ТЕСТОВОЕ СООБЩЕНИЕ");
+//        log.warn("ТЕСТОВОЕ СООБЩЕНИЕ");
 //        systemPropertiesService.fillSystemProperties();//убрать это отсюда.возможно сделать постконструкт, проверять при добавлении товаров
+        Product product = getCurrentProductByUrl(request, "/ochki/oprava_");
+        if(product!=null){
+            //обработка страницы конкретного товара
+            model.addAttribute("product", new ProductProxy(product));
+            return "productPage";
+        }else{
+            //обработка страницы товаров с фильтрами
         Page<Product> products;
         Product filterProduct = new Product();
         Map<String,Integer> params=new HashMap<>();
@@ -158,9 +166,33 @@ public class MainController {
         model.addAttribute("setFilterMinPrice", params.get("minPrice")==null?systemPropertiesConfig.getMinPrice():params.get("minPrice"));
         model.addAttribute("setFilterMaxFrame", params.get("maxFrame")==null?systemPropertiesConfig.getMaxFrame():params.get("maxFrame"));
         model.addAttribute("setFilterMinFrame", params.get("minFrame")==null?systemPropertiesConfig.getMinFrame():params.get("minFrame"));
-
-
         return "main";
+        }
+    }
+
+    private Product getCurrentProductByUrl(HttpServletRequest request, String startFrom){
+        String referrer = request.getRequestURL().toString();
+        Product product=null;
+        try {
+        if(referrer.contains(startFrom)) {
+            String substring = referrer.substring(referrer.indexOf(startFrom) + startFrom.length());
+            String brandStr = substring.substring(0,substring.lastIndexOf("_"));
+            String vendorStr = substring.substring(substring.lastIndexOf("_")+1);
+            //todo отбработку ошибок парсинга ссылки
+            if(!StringUtils.isEmpty(vendorStr)){
+                Long vendor = Long.parseLong(vendorStr);
+                AttributeEnum brand = AttributeEnum.findByCode(brandStr);
+                if (brand != null) {
+                    Integer brandCode =brand.getId();
+                    product=productDAO.findFirstByVendorAndAttributeId(vendor, brandCode);
+                }
+            }
+        }
+        } catch (Exception e) {
+            //todo отбработку ошибок парсинга ссылки.сейчас при неверной ссылке остаемся на списке товаров
+            log.error("Ошибка распознавания ссылки на объект");
+        }
+        return product;
     }
 
     private Collection<List<Integer>>  groupAttributesByGroupId(Set<AttributeEnum> attributes) {

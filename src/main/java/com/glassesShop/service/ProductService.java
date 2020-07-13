@@ -29,12 +29,15 @@ public class ProductService {
     private AttributeRepo attributeRepo;
 
 
-    public void saveProduct(Product product, String name, String description, MultipartFile file, Map<String, String> form) throws IOException {
+    public void saveProduct(Product product, String name, String description, Long vendor, MultipartFile file, Map<String, String> form) throws IOException {
         if (product == null) {
             product = new Product();
         }
         if (!StringUtils.isEmpty(description)) {
             product.setDescription(description);
+        }
+        if (vendor != null) {
+            product.setVendor(vendor);
         }
         if (!StringUtils.isEmpty(name)) {
             product.setName(name);

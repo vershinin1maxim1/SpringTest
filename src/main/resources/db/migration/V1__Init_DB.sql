@@ -5,6 +5,7 @@ create table product (
     filename varchar(255),
     name varchar(255),
     description varchar(2048),
+    vendor int8,
     attribute_id int8,
     price int4,
     frame int4,

@@ -19,6 +19,15 @@
                 </#if>
             </div>
             <div class="form-group">
+                <input type="text" class="form-control ${(textError??)?string('is-invalid', '')}"
+                       value="<#if product??>${product.vendor}</#if>" name="vendor" placeholder="Артикул" />
+                <#if vendorError??>
+                    <div class="invalid-feedback">
+                        ${vendorError}
+                    </div>
+                </#if>
+            </div>
+            <div class="form-group">
                 <input type="text" class="form-control"
                        value="<#if product??>${product.description}</#if>" name="description" placeholder="Описание">
                 <#if descriptionError??>

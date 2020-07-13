@@ -11,6 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class ProductProxy {
     private Long id;
+    private Long vendor;
     private String description;
     private String name;
     private Integer price;
@@ -20,7 +21,7 @@ public class ProductProxy {
     private Set<Gender> genders = new HashSet<>();
     private Set<Material> materials = new HashSet<>();
     private Set<FrameForm> frameForms = new HashSet<>();
-    private Set<Brand> brands = new HashSet<>();
+    private Brand brand;
 
 
     public ProductProxy(Product product) {
@@ -30,6 +31,7 @@ public class ProductProxy {
         this.filename = product.getFilename();
         this.price = product.getPrice();
         this.frame = product.getFrame();
+        this.vendor = product.getVendor();
         if(product.getAttributes()!=null) {
             for (Attribute attr : product.getAttributes()) {
                 AttributeEnum attrEnum = AttributeEnum.findById(attr.getAttributeId());
@@ -49,7 +51,7 @@ public class ProductProxy {
                         this.frameForms.add(FrameForm.valueOf(attrEnum.toString()));
                     }
                     if (type.equals(Brand.class)) {
-                        this.brands.add(Brand.valueOf(attrEnum.toString()));
+                        this.brand=(Brand.valueOf(attrEnum.toString()));
                     }
                 }
             }
