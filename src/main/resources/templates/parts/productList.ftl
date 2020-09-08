@@ -19,11 +19,13 @@
             <div class="card">
 <#--            <div class="card" style="width:250px">-->
                 <div>
-                    <a href="oprava_<#if product.vendor??&&product.brand??>${product.brand.code}_${product.vendor}</#if>">
+
                         <#if product.filename??>
                             <img src="/img/${product.filename}" class="card-img-top">
                         </#if>
                         <div class="m-2">
+                            <a href="/ochki/oprava_<#if product.vendor??&&product.brand??>${product.brand.code}_${product.vendor?c}</#if>">
+
                             <i>${product.name}</i>
         <#--                    <span>${product.description}</span><br/>-->
 

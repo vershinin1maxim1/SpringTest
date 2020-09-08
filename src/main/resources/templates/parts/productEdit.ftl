@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 <input type="text" class="form-control ${(textError??)?string('is-invalid', '')}"
-                       value="<#if product??>${product.vendor}</#if>" name="vendor" placeholder="Артикул" />
+                       value="<#if product??>${product.vendor?c}</#if>" name="vendor" placeholder="Артикул" />
                 <#if vendorError??>
                     <div class="invalid-feedback">
                         ${vendorError}
