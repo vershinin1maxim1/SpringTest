@@ -49,6 +49,10 @@ public class ProductDAO {
         return null;
     }
 
+    public Product findById (long id){
+        return entityManager.find(Product.class, id);
+    }
+
     public List<Product> findByParams(Collection<List<Integer>>  attributeIds, Integer minPrice, Integer maxPrice,  Integer minFrame, Integer maxFrame, Pageable pageable, String sort, boolean desc){
         CriteriaQuery<Product> query =entityManager.getCriteriaBuilder().createQuery(Product.class);
         Root<Product> selection = query.from(Product.class);

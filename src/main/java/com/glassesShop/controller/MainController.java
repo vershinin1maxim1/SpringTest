@@ -15,10 +15,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,6 +46,11 @@ public class MainController {
         return "greeting";
     }
 
+    @GetMapping("/ochkiGetById/{id}")
+    public String getProductById(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
+        model.addAttribute("product", new ProductProxy(productDAO.findById(id)));
+        return "parts/productInfo";
+    }
     @GetMapping({"/ochkiGetActualFilter", "/ochkiGetActualFilter/**"})
     @ResponseBody
     public  List<ProductProxyFilterDto>  getActualFilter(@RequestParam(required = false, defaultValue = "") String filter, HttpServletRequest request) {

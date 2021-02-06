@@ -1,7 +1,17 @@
 <#include "security.ftl">
 <#import "addToBasket.ftl" as addToBasketPage>
 <script type="text/javascript" charset="utf-8">
+    var selectedProducts=[];
+    $(document).ready(function() {
+         <#list products as product>
+            $("#addToBasketButton_${product.id}").on("click", function () {
+                selectedProducts=[];
+                selectedProducts.push("${product.id}");//запоминаем последний выбранный товар, чтоб использовать его на другой странице
+                initAddToBasketWindow();
+            });
+          </#list>
 
+    });
    function goToPage(pageNumber) {
        let url = new URL(window.location.href);
        url.searchParams.set("page", pageNumber);
@@ -41,7 +51,7 @@
                 </div>
                 </#if>
                 <div class="card-footer text-muted">
-                    <a class="btn btn-primary"  data-toggle="modal" data-target="#myModal">
+                    <a class="btn btn-primary" id="addToBasketButton_${product.id}"  data-toggle="modal" data-target="#myModal">
                         добавить в корзину
                     </a>
                 </div>
